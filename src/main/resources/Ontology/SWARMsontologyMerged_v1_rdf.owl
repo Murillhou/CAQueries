@@ -3196,6 +3196,9 @@
         <rdf:type rdf:resource="http://www.semanticweb.org/SWARMs/ontology/GPSPosition"/>
         <ontology:gpsPositionWaterCol rdf:resource="http://www.semanticweb.org/SWARMs/ontology/waterCol2"/>
         <ontology:isInPath rdf:resource="http://www.semanticweb.org/SWARMs/ontology/wbp1"/>
+        <ontology:gpsAltitude rdf:datatype="http://www.w3.org/2001/XMLSchema#float">4.0</ontology:gpsAltitude>
+        <ontology:gpsLatitude rdf:datatype="http://www.w3.org/2001/XMLSchema#float">2.0</ontology:gpsLatitude>
+        <ontology:gpsLongitude rdf:datatype="http://www.w3.org/2001/XMLSchema#float">3.0</ontology:gpsLongitude>
     </owl:NamedIndividual>
     
 
@@ -3205,6 +3208,9 @@
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/SWARMs/ontology/gpsPos3">
         <rdf:type rdf:resource="http://www.semanticweb.org/SWARMs/ontology/GPSPosition"/>
         <ontology:gpsPositionWaterCol rdf:resource="http://www.semanticweb.org/SWARMs/ontology/waterCol3"/>
+        <ontology:gpsAltitude rdf:datatype="http://www.w3.org/2001/XMLSchema#float">5.0</ontology:gpsAltitude>
+        <ontology:gpsLatitude rdf:datatype="http://www.w3.org/2001/XMLSchema#float">3.0</ontology:gpsLatitude>
+        <ontology:gpsLongitude rdf:datatype="http://www.w3.org/2001/XMLSchema#float">4.0</ontology:gpsLongitude>
     </owl:NamedIndividual>
     
 
@@ -3214,6 +3220,9 @@
     <owl:NamedIndividual rdf:about="http://www.semanticweb.org/SWARMs/ontology/gpsPos4">
         <rdf:type rdf:resource="http://www.semanticweb.org/SWARMs/ontology/GPSPosition"/>
         <ontology:gpsPositionWaterCol rdf:resource="http://www.semanticweb.org/SWARMs/ontology/waterCol4"/>
+        <ontology:gpsAltitude rdf:datatype="http://www.w3.org/2001/XMLSchema#float">6.0</ontology:gpsAltitude>
+        <ontology:gpsLatitude rdf:datatype="http://www.w3.org/2001/XMLSchema#float">4.0</ontology:gpsLatitude>
+        <ontology:gpsLongitude rdf:datatype="http://www.w3.org/2001/XMLSchema#float">5.0</ontology:gpsLongitude>
     </owl:NamedIndividual>
     
 

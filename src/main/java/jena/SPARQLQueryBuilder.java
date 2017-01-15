@@ -24,6 +24,12 @@ public class SPARQLQueryBuilder {
 		where.addLast(z);
 	}
 	
+	public void addFilterToWhere(String x, String operator, String value, String valuetype) {
+		where.addLast("FILTER");
+		where.addLast("("+x+" "+operator+" \""+value+"\"^^xsd:"+valuetype+")");
+		where.addLast(" ");
+	}
+	
 	public void append(SPARQLQueryBuilder sqb) {
 		this.select.addAll(sqb.select);
 		this.where.addAll(sqb.where);

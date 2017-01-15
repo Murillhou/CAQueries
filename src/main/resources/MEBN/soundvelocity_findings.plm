@@ -1,0 +1,3 @@
+(ASSERT (GPSPosition_LABEL gpsPos2))
+(ASSERT (WaterColumn_LABEL waterCol2))
+(ASSERT (= (gpsPositionWaterCol gpsPos2) waterCol2))

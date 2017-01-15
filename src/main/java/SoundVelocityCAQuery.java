@@ -40,38 +40,51 @@ public class SoundVelocityCAQuery {
 	
 	public static void main(String[] args) {
 		tmr = new TextModeRunner();
-		String[] gpsPosCoord = Arrays.copyOfRange(args, 0, 3);		
-	// load ubf/owl
-		UbfIO ubf = UbfIO.getInstance();
-		MultiEntityBayesianNetwork mebn = null;
-		try {
-			mebn = ubf.loadMebn(new File(mebnFile));
-		} catch (IOException e) {
-			e.printStackTrace();
+		
+	// get the spatial context of the coordinates passed as arguments witha radius constant of 2.0
+		List<QuerySolution> lqs = SPARQLQuery.getSpatialContext(args[0], args[1], args[2], 2);
+	// if there is knowledge about the spatial context
+		if(lqs.size()>0){
+		// for each gpsPosition on the result
+			for(QuerySolution qs : lqs){
+				String lat = qs.get("?lat").toString(); lat = lat.substring(0, lat.indexOf("^^"));
+				String lon = qs.get("?lon").toString(); lon = lon.substring(0, lon.indexOf("^^"));
+				String alt = qs.get("?alt").toString(); alt = alt.substring(0, alt.indexOf("^^"));
+				String[] gpsPosCoord = {lat, lon, alt};		
+				// load ubf/owl
+					UbfIO ubf = UbfIO.getInstance();
+					MultiEntityBayesianNetwork mebn = null;
+					try {
+						mebn = ubf.loadMebn(new File(mebnFile));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				// fill findings file from OWL ontology
+					String gpsPos = fillFindingsFile(gpsPosCoord, mebn);
+				// initialize kb
+					kb = PowerLoomKB.getNewInstanceKB(); 
+					kb = tmr.createKnowledgeBase(kb, mebn);
+				// load kb
+					try {
+						kb.loadModule(new File(findingsFile), true);
+					} catch (UBIOException e) {
+						e.printStackTrace();
+					}
+				// execute MEBN query
+					QueryNodeNameAndArguments qnnaa = tmr.new QueryNodeNameAndArguments("SoundVelocity",gpsPos);
+					ProbabilisticNode pn = null;
+					try {
+						pn = MEBNQuery.executeMEBNQuery(kb, tmr, mebn, findingsFile, qnnaa);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				// print result
+					so.println("********RESULT********\n"+pn.getName());
+					for(int i = 0; i < pn.getStatesSize(); i++) so.print(pn.getStateAt(i)+" -> "+pn.getMarginalAt(i)+", ");
+					so.print("\n");
+			}
 		}
-	// fill findings file from OWL ontology
-		String gpsPos = fillFindingsFile(gpsPosCoord, mebn);
-	// initialize kb
-		kb = PowerLoomKB.getNewInstanceKB(); 
-		kb = tmr.createKnowledgeBase(kb, mebn);
-	// load kb
-		try {
-			kb.loadModule(new File(findingsFile), true);
-		} catch (UBIOException e) {
-			e.printStackTrace();
-		}
-	// execute MEBN query
-		QueryNodeNameAndArguments qnnaa = tmr.new QueryNodeNameAndArguments("SoundVelocity",gpsPos);
-		ProbabilisticNode pn = null;
-		try {
-			pn = MEBNQuery.executeMEBNQuery(kb, tmr, mebn, findingsFile, qnnaa);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	// print result
-		so.println("********RESULT********\n"+pn.getName());
-		for(int i = 0; i < pn.getStatesSize(); i++) so.print(pn.getStateAt(i)+" -> "+pn.getMarginalAt(i)+", ");
-		so.print("\n");
+	
 	}	
 	
 	private static String fillFindingsFile(String[] gpsPosCoord, MultiEntityBayesianNetwork mebn) {
