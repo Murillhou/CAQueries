@@ -11,8 +11,8 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jena-pellet"/>
-	<classpathentry kind="src" path="/MEBN"/>
-	<classpathentry kind="src" path="/UnBBayes"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jena-pellet"/> <!-- included on /lib folder -->
+	<classpathentry kind="src" path="/MEBN"/> <!-- http://svn.code.sf.net/p/unbbayes/code/trunk/unbbayes.prs.mebn -->
+	<classpathentry kind="src" path="/UnBBayes"/> <!-- http://svn.code.sf.net/p/unbbayes/code/trunk/UnBBayes -->
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
