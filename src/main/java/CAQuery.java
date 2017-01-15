@@ -192,7 +192,7 @@ public class CAQuery {
 					}
 					
 				}else{
-					so.println("*****FOUND AN EDGE NODE THAT DIDNT PRODUCE RESULT. MFRAG: "+mfrag);
+					so.println("*****FOUND AN EDGE NODE THAT DIDNT PRODUCE RESULT. MFRAG: "+mfrag+". RN: "+irnName);
 				}
 			}
 		}
@@ -218,7 +218,7 @@ public class CAQuery {
 	}
 		
 	private static String stringValueIRItoLabel(String iri) {
-		return iri.substring(0,iri.indexOf("^"));
+		return iri.substring(0,iri.indexOf("^^"));
 	}
 	// TODO ONLY SUPPORTS CONTEXT NODES WITH FORMULA "CN_NAME(OVARG0)=0VARG1"
 	private static String labelToName(String label) {

@@ -10,6 +10,11 @@ import unbbayes.prs.bn.ProbabilisticNode;
 import unbbayes.prs.mebn.MultiEntityBayesianNetwork;
 import unbbayes.prs.mebn.kb.KnowledgeBase;
 
+/**
+ * 
+ * @author Pablo Murillo
+ *
+ */
 public class MEBNQuery {
 
 	private static ProbabilisticNetwork net;

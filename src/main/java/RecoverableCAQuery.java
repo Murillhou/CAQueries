@@ -28,13 +28,19 @@ import unbbayes.prs.mebn.OrdinaryVariable;
 import unbbayes.prs.mebn.kb.KnowledgeBase;
 import unbbayes.prs.mebn.kb.powerloom.PowerLoomKB;
 
+/**
+ * 
+ * @author Pablo Murillo
+ *
+ */
 public class RecoverableCAQuery {
 
 	private static String mebnFile = "src/main/resources/MEBN/Recoverable.ubf";
 	private static String findingsFile = "src/main/resources/KnowledgeBase/recoverable_findings.plm";
 	private static TextModeRunner tmr;
-	private static KnowledgeBase kb;
+	private static KnowledgeBase kb;	
 	private static PrintStream so = System.out;
+	
 	public RecoverableCAQuery() {}	
 	
 	public static void main(String[] args) {
@@ -82,8 +88,9 @@ public class RecoverableCAQuery {
 		catch (UnsupportedEncodingException | FileNotFoundException e) {e.printStackTrace();}
 	// get MFrag
 		MFrag mfrag = mebn.getMFragByName("Recoverable_MFrag");
-//		// print all
+//	// print all
 //		CAQuery.printAll(mebn.getDomainResidentNodes());
+	
 	// EXECUTE QUERY IN ORDER TO KNOW IF THE VEHICLE ON THE ARGUMENT EXISTS IN THE ONTOLOGY
 		SPARQLQueryBuilder sqb = new SPARQLQueryBuilder();
 		sqb.addToSelect("?autRob");

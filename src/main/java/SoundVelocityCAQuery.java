@@ -29,6 +29,11 @@ import unbbayes.prs.mebn.OrdinaryVariable;
 import unbbayes.prs.mebn.kb.KnowledgeBase;
 import unbbayes.prs.mebn.kb.powerloom.PowerLoomKB;
 
+/**
+ * 
+ * @author Pablo Murillo
+ *
+ */
 public class SoundVelocityCAQuery {
 
 	private static String mebnFile = "src/main/resources/MEBN/SoundVelocity.ubf";
