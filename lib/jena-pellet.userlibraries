@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="WINDOWS-1252" standalone="no"?>
+<eclipse-userlibraries version="2">
+    <library name="jena-pellet" systemlibrary="false">
+        <archive path="/CA_Queries/lib/antlr-2.7.7.jar"/>
+        <archive path="/CA_Queries/lib/antlr-runtime-3.4.jar"/>
+        <archive path="/CA_Queries/lib/aterm-java-1.8.2-p1.jar"/>
+        <archive path="/CA_Queries/lib/commons-codec-1.6.jar"/>
+        <archive path="/CA_Queries/lib/httpclient-4.2.3.jar"/>
+        <archive path="/CA_Queries/lib/httpcore-4.2.2.jar"/>
+        <archive path="/CA_Queries/lib/jena-arq-2.10.1.jar"/>
+        <archive path="/CA_Queries/lib/jena-core-2.10.1.jar"/>
+        <archive path="/CA_Queries/lib/jena-iri-0.9.6.jar"/>
+        <archive path="/CA_Queries/lib/jgrapht-jdk1.5-0.7.3.jar"/>
+        <archive path="/CA_Queries/lib/jjtraveler-0.6.jar"/>
+        <archive path="/CA_Queries/lib/org.osgi.core-1.4.0.jar"/>
+        <archive path="/CA_Queries/lib/owlapi-api-3.4.10.jar"/>
+        <archive path="/CA_Queries/lib/owlapi-apibinding-3.4.10.jar"/>
+        <archive path="/CA_Queries/lib/owlapi-impl-3.4.10.jar"/>
+        <archive path="/CA_Queries/lib/owlapi-oboformat-3.4.10.jar"/>
+        <archive path="/CA_Queries/lib/owlapi-parsers-3.4.10.jar"/>
+        <archive path="/CA_Queries/lib/owlapi-tools-3.4.10.jar"/>
+        <archive path="/CA_Queries/lib/pellet-cli-2.3.2-SNAPSHOT.jar"/>
+        <archive path="/CA_Queries/lib/pellet-core-2.3.2-SNAPSHOT.jar"/>
+        <archive path="/CA_Queries/lib/pellet-distribution-2.3.2-SNAPSHOT-dist.zip"/>
+        <archive path="/CA_Queries/lib/pellet-examples-2.3.2-SNAPSHOT.jar"/>
+        <archive path="/CA_Queries/lib/pellet-explanation-2.3.2-SNAPSHOT.jar"/>
+        <archive path="/CA_Queries/lib/pellet-jena-2.3.2-SNAPSHOT.jar"/>
+        <archive path="/CA_Queries/lib/pellet-master.zip"/>
+        <archive path="/CA_Queries/lib/pellet-modularity-2.3.2-SNAPSHOT.jar"/>
+        <archive path="/CA_Queries/lib/pellet-owlapiv3-2.3.2-SNAPSHOT.jar"/>
+        <archive path="/CA_Queries/lib/pellet-pellint-2.3.2-SNAPSHOT.jar"/>
+        <archive path="/CA_Queries/lib/pellet-query-2.3.2-SNAPSHOT.jar"/>
+        <archive path="/CA_Queries/lib/pellet-test-2.3.2-SNAPSHOT.jar"/>
+        <archive path="/CA_Queries/lib/pellet.jar"/>
+        <archive path="/CA_Queries/lib/pellet.jar.zip"/>
+        <archive path="/CA_Queries/lib/shared-objects-1.4.9-p1.jar"/>
+        <archive path="/CA_Queries/lib/slf4j-api-1.7.5.jar"/>
+        <archive path="/CA_Queries/lib/slf4j-simple-1.7.5.jar"/>
+        <archive path="/CA_Queries/lib/stringtemplate-3.2.1.jar"/>
+        <archive path="/CA_Queries/lib/xercesImpl-2.11.0.jar"/>
+        <archive path="/CA_Queries/lib/xml-apis-1.4.01.jar"/>
+    </library>
+</eclipse-userlibraries>

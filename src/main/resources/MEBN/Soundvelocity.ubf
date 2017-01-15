@@ -1,0 +1,219 @@
+% UBF file header
+Version=0.04
+PrOwl="Soundvelocity.owl"
+
+% UBF MTheory declaration
+MTheory=MEBN
+NextMFrag=14
+NextResident=12
+NextInput=19
+NextContext=9
+NextEntity=1
+
+% UBF MFrags and Nodes declaration
+
+% MFrag
+MFrag=CA_depth_MFrag
+NextOrdinaryVar=2
+
+% Resident nodes
+
+
+Node=CA_depth
+Type=DomainResidentNode
+Position=173.0,248.0
+Size=155,60
+Color=-66914
+PossibleValuesOrder=Surface,FirstHalf,LastHalf,SeaBed
+
+% Ordinary Variables
+
+
+Node=gpsPos
+Type=OrdinalVar
+Position=141.0,74.0
+Size=191,60
+Color=-5178237
+
+% MFrag
+MFrag=Reference_MFrag
+NextOrdinaryVar=3
+
+% Resident nodes
+
+
+Node=gpsPositionWaterCol
+Type=DomainResidentNode
+Position=257.0,288.0
+Size=206,60
+Color=-66914
+PossibleValuesOrder=WaterColumn
+
+% Ordinary Variables
+
+
+Node=gpsPos
+Type=OrdinalVar
+Position=254.0,70.0
+Size=191,60
+Color=-5178237
+
+% MFrag
+MFrag=SoundVelocity_MFrag
+NextOrdinaryVar=6
+
+% Resident nodes
+
+
+Node=SoundVelocity
+Type=DomainResidentNode
+Position=271.0,369.0
+Size=178,60
+Color=-66914
+PossibleValuesOrder=High,Medium,Low
+
+% Input nodes
+
+
+Node=IX13
+Type=GenerativeInputNode
+Position=279.0,251.0
+Size=159,60
+Color=-2302756
+
+Node=IX14
+Type=GenerativeInputNode
+Position=465.0,243.0
+Size=217,60
+Color=-2302756
+
+Node=IX16
+Type=GenerativeInputNode
+Position=112.0,242.0
+Size=148,60
+Color=-2302756
+
+% Context nodes
+
+
+Node=CX7
+Type=ContextNode
+Position=133.0,123.0
+Size=249,60
+Color=-5178237
+
+% Ordinary Variables
+
+
+Node=gpsPos
+Type=OrdinalVar
+Position=279.0,56.0
+Size=191,60
+Color=-5178237
+
+Node=col
+Type=OrdinalVar
+Position=48.0,57.0
+Size=177,60
+Color=-5178237
+
+% MFrag
+MFrag=PositionTemperature_MFrag
+NextOrdinaryVar=11
+
+% Resident nodes
+
+
+Node=PositionTemperature
+Type=DomainResidentNode
+Position=204.0,450.0
+Size=217,60
+Color=-66914
+PossibleValuesOrder=High,Medium,Low
+
+% Input nodes
+
+
+Node=IX17
+Type=GenerativeInputNode
+Position=360.0,344.0
+Size=155,60
+Color=-2302756
+
+Node=IX18
+Type=GenerativeInputNode
+Position=48.0,349.0
+Size=243,60
+Color=-2302756
+
+% Context nodes
+
+
+Node=CX8
+Type=ContextNode
+Position=205.0,141.0
+Size=261,60
+Color=-5178237
+
+% Ordinary Variables
+
+
+Node=gpsPos
+Type=OrdinalVar
+Position=104.0,81.0
+Size=191,60
+Color=-5178237
+
+Node=col
+Type=OrdinalVar
+Position=363.0,84.0
+Size=184,60
+Color=-5178237
+
+% MFrag
+MFrag=CA_waterSalinity_MFrag
+NextOrdinaryVar=5
+
+% Resident nodes
+
+
+Node=CA_waterSalinity
+Type=DomainResidentNode
+Position=180.0,182.0
+Size=159,60
+Color=-66914
+PossibleValuesOrder=High,Medium,Low
+
+% Ordinary Variables
+
+
+Node=col
+Type=OrdinalVar
+Position=173.0,71.0
+Size=177,60
+Color=-5178237
+
+% MFrag
+MFrag=CA_waterTemperature_MFrag
+NextOrdinaryVar=2
+
+% Resident nodes
+
+
+Node=CA_waterTemperature
+Type=DomainResidentNode
+Position=219.0,200.0
+Size=196,60
+Color=-66914
+PossibleValuesOrder=High,Medium,Low
+
+% Ordinary Variables
+
+
+Node=col
+Type=OrdinalVar
+Position=223.0,79.0
+Size=170,60
+Color=-5178237
+
+% Object Entity Instances
