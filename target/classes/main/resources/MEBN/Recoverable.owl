@@ -1,0 +1,3531 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns="http://www.pr-owl.org/pr-owl.owl#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+  xml:base="http://www.pr-owl.org/pr-owl.owl">
+  <owl:Ontology rdf:about="">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    ></rdfs:comment>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >PR-OWL is an upper ontology to support writing probabilistic ontologies. It is based on Multi-Entity Bayesian Networks (MEBN). More information can be found at www.pr-owl.org.</rdfs:comment>
+    <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#float"
+    >1.05</owl:versionInfo>
+  </owl:Ontology>
+  <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#boolean"/>
+  <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#string"/>
+  <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#decimal"/>
+  <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"/>
+  <owl:Class rdf:ID="ProbDist">
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom>
+          <owl:Class rdf:ID="Resident"/>
+        </owl:someValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="isProbDistOf"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isProbDistOf"/>
+        </owl:onProperty>
+        <owl:allValuesFrom>
+          <owl:Class rdf:about="#Resident"/>
+        </owl:allValuesFrom>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    > This class is meant to represent the probability distributions that are defined in an MFrag to each of its resident nodes (random variables). A probability distribution can be described using a proprietary declarative format, such as a Netica table or a Quiddity function, or via an PR-OWL table (which has probability assigments as its cells).</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:ID="CA_WayBackPath">
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="EnvironmentDomain"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="BuiltInRV">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:InverseFunctionalProperty rdf:ID="hasInputInstance"/>
+        </owl:onProperty>
+        <owl:allValuesFrom>
+          <owl:Class rdf:ID="Input"/>
+        </owl:allValuesFrom>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom>
+          <owl:Class rdf:ID="BooleanRVState"/>
+        </owl:someValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="hasPossibleValues"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class rdf:about="#BooleanRVState"/>
+        </owl:allValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasPossibleValues"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Individuals of this class represent the random variables from MEBN logic's built-in MFrags: logical connectives, quantifiers, the equality random variable. Likewise their function in MEBN logic, these individuals allow PR-OWL ontologies to represent a rich family of probability distributions over interpretations of first-order logic.
+Note that MEBN's built-in Indirect Reference MFrag is already represented in PR-OWL via its recursive scheme of building complex formulas.</rdfs:comment>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="Domain_Res"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="Finding_res"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:ID="WaterColumn">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#EnvironmentDomain"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="GPSPosition">
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="Position"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#Finding_res">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#Resident"/>
+    </rdfs:subClassOf>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This is the subclass of class Resident (node) that includes all finding nodes. Finding nodes convey new evidence into a probabilistic system via a Finding_MFrag. The class is disjoint with classes Domain_res and BuiltInRV.</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >0</owl:cardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="isParentOf"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Domain_Res"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="hasParent"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom>
+          <owl:Class>
+            <owl:oneOf rdf:parseType="Collection">
+              <BooleanRVState rdf:ID="true">
+                <isPossibleValueOf>
+                  <BuiltInRV rdf:ID="exists">
+                    <hasPossibleValues rdf:resource="#true"/>
+                    <hasPossibleValues>
+                      <BooleanRVState rdf:ID="absurd">
+                        <isPossibleValueOf>
+                          <BuiltInRV rdf:ID="forall">
+                            <hasPossibleValues rdf:resource="#true"/>
+                            <hasPossibleValues rdf:resource="#absurd"/>
+                            <hasPossibleValues>
+                              <BooleanRVState rdf:ID="false">
+                                <hasUID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                >F</hasUID>
+                                <isPossibleValueOf rdf:resource="#exists"/>
+                                <isPossibleValueOf>
+                                  <BuiltInRV rdf:ID="and">
+                                    <hasPossibleValues rdf:resource="#true"/>
+                                    <hasPossibleValues rdf:resource="#absurd"/>
+                                    <hasPossibleValues rdf:resource="#false"/>
+                                  </BuiltInRV>
+                                </isPossibleValueOf>
+                                <isPossibleValueOf>
+                                  <BuiltInRV rdf:ID="iff">
+                                    <hasPossibleValues rdf:resource="#true"/>
+                                    <hasPossibleValues rdf:resource="#absurd"/>
+                                    <hasPossibleValues rdf:resource="#false"/>
+                                  </BuiltInRV>
+                                </isPossibleValueOf>
+                                <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                >This state corresponds to the meaningfull hypotheses that have a false truth-value.</rdfs:comment>
+                                <isPossibleValueOf rdf:resource="#forall"/>
+                                <isPossibleValueOf>
+                                  <BuiltInRV rdf:ID="equalto">
+                                    <hasPossibleValues rdf:resource="#true"/>
+                                    <hasPossibleValues rdf:resource="#absurd"/>
+                                    <hasPossibleValues rdf:resource="#false"/>
+                                    <hasContextInstance>
+                                      <Context rdf:ID="CX17">
+                                        <isContextInstanceOf rdf:resource="#equalto"/>
+                                        <hasInnerTerm>
+                                          <Context rdf:ID="CX17_1_inner">
+                                            <hasPossibleValues>
+                                              <MetaEntity rdf:ID="CA_WayBackPath_label">
+                                                <isPossibleValueOf>
+                                                  <Context rdf:ID="CX16_1_inner">
+                                                    <hasArgument>
+                                                      <SimpleArgRelationship rdf:ID="CX16_1_inner_1">
+                                                        <hasArgTerm>
+                                                          <OVariable rdf:ID="Ref_AutonomousRobot_hasGPSPosition_GPSPosition_MFrag.autRob">
+                                                            <isArgTermIn>
+                                                              <SimpleArgRelationship rdf:ID="waybackPath_1">
+    <isArgumentOf>
+      <Domain_Res rdf:ID="Domain_Res.waybackPath">
+        <hasContextInstance rdf:resource="#CX16_1_inner"/>
+        <isResidentNodeIn>
+          <Domain_MFrag rdf:ID="Domain_MFrag.Ref_AutonomousRobot_waybackPath_CA_WayBackPath_MFrag">
+            <hasResidentNode rdf:resource="#Domain_Res.waybackPath"/>
+            <isMFragOf>
+              <MTheory rdf:ID="MEBN">
+                <hasMFrag>
+                  <Domain_MFrag rdf:ID="Domain_MFrag.Ref_WaterColumn_hasWaterCurrent_WaterCurrent_MFrag">
+                    <hasResidentNode>
+                      <Domain_Res rdf:ID="Domain_Res.hasWaterCurrent">
+                        <isResidentNodeIn rdf:resource="#Domain_MFrag.Ref_WaterColumn_hasWaterCurrent_WaterCurrent_MFrag"/>
+                        <hasArgument>
+                          <SimpleArgRelationship rdf:ID="hasWaterCurrent_1">
+                            <hasArgTerm>
+                              <OVariable rdf:ID="WaterCurrent_MFrag.waterCol">
+                                <isArgTermIn>
+                                  <SimpleArgRelationship rdf:ID="CX5_1_inner_1">
+                                    <hasArgTerm rdf:resource="#WaterCurrent_MFrag.waterCol"/>
+                                    <hasArgNumber rdf:datatype=
+                                    "http://www.w3.org/2001/XMLSchema#int"
+                                    >1</hasArgNumber>
+                                    <isArgumentOf>
+                                      <Context rdf:ID="CX5_1_inner">
+                                        <isContextInstanceOf rdf:resource="#Domain_Res.hasWaterCurrent"/>
+                                        <hasPossibleValues>
+                                          <MetaEntity rdf:ID="WaterCurrent_label">
+                                            <subsOVar>
+                                              <OVariable rdf:ID="CA_waterCurrentVelocity_MFrag.waterCurr">
+                                                <rdfs:comment
+                                                 rdf:datatype=
+                                                "http://www.w3.org/2001/XMLSchema#string"
+                                                >OX1</rdfs:comment>
+                                                <isOVariableIn>
+                                                  <Domain_MFrag rdf:ID="Domain_MFrag.CA_waterCurrentVelocity_MFrag">
+                                                    <hasOVariable rdf:resource="#CA_waterCurrentVelocity_MFrag.waterCurr"/>
+                                                    <hasResidentNode>
+                                                      <Domain_Res rdf:ID="Domain_Res.CA_waterCurrentVelocity">
+                                                        <rdfs:comment
+                                                         rdf:datatype=
+                                                        "http://www.w3.org/2001/XMLSchema#string"
+                                                        >RX14</rdfs:comment>
+                                                        <hasPossibleValues>
+                                                          <CategoricalRVState rdf:ID="Low">
+                                                            <hasType>
+                                                              <MetaEntity rdf:ID="CategoryLabel">
+    <isTypeOf>
+      <CategoricalRVState rdf:ID="North">
+        <hasType rdf:resource="#CategoryLabel"/>
+      </CategoricalRVState>
+    </isTypeOf>
+    <isTypeOf>
+      <CategoricalRVState rdf:ID="Medium">
+        <hasType rdf:resource="#CategoryLabel"/>
+        <isPossibleValueOf>
+          <Generative_input rdf:ID="IX2">
+            <hasArgument>
+              <SimpleArgRelationship rdf:ID="IX2_1">
+                <hasArgTerm>
+                  <OVariable rdf:ID="Ref_GPSPosition_isInPath_CA_WayBackPath_MFrag.gpsPos">
+                    <isArgTermIn>
+                      <SimpleArgRelationship rdf:ID="WaybackPosWatercurrentCost_1">
+                        <hasArgTerm rdf:resource="#Ref_GPSPosition_isInPath_CA_WayBackPath_MFrag.gpsPos"/>
+                        <isArgumentOf>
+                          <Domain_Res rdf:ID="Domain_Res.WaybackPosWatercurrentCost">
+                            <hasParent>
+                              <Generative_input rdf:ID="IX13">
+                                <hasPossibleValues>
+                                  <CategoricalRVState rdf:ID="High_SOUTH">
+                                    <isPossibleValueOf rdf:resource="#IX13"/>
+                                    <isPossibleValueOf>
+                                      <Domain_Res rdf:ID="Domain_Res.WaterCurrent">
+                                        <hasPossibleValues>
+                                          <CategoricalRVState rdf:ID="Low_SOUTH">
+                                            <isPossibleValueOf rdf:resource="#IX13"/>
+                                            <isPossibleValueOf rdf:resource="#Domain_Res.WaterCurrent"/>
+                                            <hasType rdf:resource="#CategoryLabel"/>
+                                          </CategoricalRVState>
+                                        </hasPossibleValues>
+                                        <hasPossibleValues>
+                                          <CategoricalRVState rdf:ID="High_NORTH">
+                                            <hasType rdf:resource="#CategoryLabel"/>
+                                            <isPossibleValueOf rdf:resource="#IX13"/>
+                                            <isPossibleValueOf rdf:resource="#Domain_Res.WaterCurrent"/>
+                                          </CategoricalRVState>
+                                        </hasPossibleValues>
+                                        <hasPossibleValues>
+                                          <CategoricalRVState rdf:ID="Medium_SOUTH">
+                                            <hasType rdf:resource="#CategoryLabel"/>
+                                            <isPossibleValueOf rdf:resource="#IX13"/>
+                                            <isPossibleValueOf rdf:resource="#Domain_Res.WaterCurrent"/>
+                                          </CategoricalRVState>
+                                        </hasPossibleValues>
+                                        <hasArgument>
+                                          <SimpleArgRelationship rdf:ID="WaterCurrent_1">
+                                            <hasArgTerm rdf:resource="#Ref_GPSPosition_isInPath_CA_WayBackPath_MFrag.gpsPos"/>
+                                            <hasArgNumber rdf:datatype=
+                                            "http://www.w3.org/2001/XMLSchema#int"
+                                            >1</hasArgNumber>
+                                            <isArgumentOf rdf:resource="#Domain_Res.WaterCurrent"/>
+                                          </SimpleArgRelationship>
+                                        </hasArgument>
+                                        <hasPossibleValues>
+                                          <CategoricalRVState rdf:ID="Medium_WEST">
+                                            <hasType rdf:resource="#CategoryLabel"/>
+                                            <isPossibleValueOf rdf:resource="#IX13"/>
+                                            <isPossibleValueOf rdf:resource="#Domain_Res.WaterCurrent"/>
+                                          </CategoricalRVState>
+                                        </hasPossibleValues>
+                                        <hasParent>
+                                          <Generative_input rdf:ID="IX6">
+                                            <isParentOf rdf:resource="#Domain_Res.WaterCurrent"/>
+                                            <rdfs:comment rdf:datatype=
+                                            "http://www.w3.org/2001/XMLSchema#string"
+                                            >IX6</rdfs:comment>
+                                            <isInputInstanceOf rdf:resource="#Domain_Res.CA_waterCurrentVelocity"/>
+                                            <hasPossibleValues rdf:resource="#Medium"/>
+                                            <hasPossibleValues>
+                                              <CategoricalRVState rdf:ID="High">
+                                                <isPossibleValueOf rdf:resource="#IX2"/>
+                                                <isPossibleValueOf>
+                                                  <Generative_input rdf:ID="IX1">
+                                                    <hasArgument>
+                                                      <SimpleArgRelationship rdf:ID="IX1_1">
+                                                        <hasArgTerm rdf:resource="#Ref_AutonomousRobot_hasGPSPosition_GPSPosition_MFrag.autRob"/>
+                                                        <isArgumentOf rdf:resource="#IX1"/>
+                                                        <hasArgNumber
+                                                         rdf:datatype=
+                                                        "http://www.w3.org/2001/XMLSchema#int"
+                                                        >1</hasArgNumber>
+                                                      </SimpleArgRelationship>
+                                                    </hasArgument>
+                                                    <hasPossibleValues rdf:resource="#Medium"/>
+                                                    <hasPossibleValues>
+                                                      <CategoricalRVState rdf:ID="Critical">
+                                                        <hasType rdf:resource="#CategoryLabel"/>
+                                                        <isPossibleValueOf rdf:resource="#IX1"/>
+                                                        <isPossibleValueOf>
+                                                          <Domain_Res rdf:ID="Domain_Res.CA_vehicleBatteryLevel">
+                                                            <hasInputInstance rdf:resource="#IX1"/>
+                                                            <hasPossibleValues rdf:resource="#Low"/>
+                                                            <hasPossibleValues rdf:resource="#High"/>
+                                                            <isResidentNodeIn>
+                                                              <Domain_MFrag rdf:ID="Domain_MFrag.CA_vehicleBatteryLevel_MFrag">
+    <isMFragOf rdf:resource="#MEBN"/>
+    <hasResidentNode rdf:resource="#Domain_Res.CA_vehicleBatteryLevel"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    ></rdfs:comment>
+    <hasOVariable>
+      <OVariable rdf:ID="CA_vehicleBatteryLevel_MFrag.autRob">
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+        >OX1</rdfs:comment>
+        <isOVariableIn rdf:resource="#Domain_MFrag.CA_vehicleBatteryLevel_MFrag"/>
+        <isSubsBy>
+          <MetaEntity rdf:ID="AutonomousRobot_label">
+            <isTypeOf>
+              <AutonomousRobot rdf:ID="AUV1">
+                <hasType rdf:resource="#AutonomousRobot_label"/>
+                <hasUID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >!AUV1</hasUID>
+              </AutonomousRobot>
+            </isTypeOf>
+            <hasUID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >!AutonomousRobot_label</hasUID>
+            <hasType>
+              <MetaEntity rdf:ID="TypeLabel">
+                <isTypeOf>
+                  <MetaEntity rdf:ID="Boolean">
+                    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                    >This MetaEntity should be applied to the truth-values T, F and ⊥ (absurd).</rdfs:comment>
+                    <hasType rdf:resource="#TypeLabel"/>
+                    <isTypeOf rdf:resource="#true"/>
+                    <isTypeOf rdf:resource="#absurd"/>
+                    <isTypeOf rdf:resource="#false"/>
+                    <hasUID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                    >!Boolean</hasUID>
+                  </MetaEntity>
+                </isTypeOf>
+                <isTypeOf>
+                  <MetaEntity rdf:ID="GPSPosition_label">
+                    <isPossibleValueOf>
+                      <Domain_Res rdf:ID="Domain_Res.hasGPSPosition">
+                        <isResidentNodeIn>
+                          <Domain_MFrag rdf:ID="Domain_MFrag.Ref_AutonomousRobot_hasGPSPosition_GPSPosition_MFrag">
+                            <hasResidentNode rdf:resource="#Domain_Res.hasGPSPosition"/>
+                            <isMFragOf rdf:resource="#MEBN"/>
+                            <hasOVariable rdf:resource="#Ref_AutonomousRobot_hasGPSPosition_GPSPosition_MFrag.autRob"/>
+                          </Domain_MFrag>
+                        </isResidentNodeIn>
+                        <hasPossibleValues rdf:resource="#GPSPosition_label"/>
+                        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        >RX18</rdfs:comment>
+                        <hasArgument>
+                          <SimpleArgRelationship rdf:ID="hasGPSPosition_1">
+                            <hasArgTerm rdf:resource="#Ref_AutonomousRobot_hasGPSPosition_GPSPosition_MFrag.autRob"/>
+                            <hasArgNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                            >1</hasArgNumber>
+                            <isArgumentOf rdf:resource="#Domain_Res.hasGPSPosition"/>
+                          </SimpleArgRelationship>
+                        </hasArgument>
+                      </Domain_Res>
+                    </isPossibleValueOf>
+                    <hasType rdf:resource="#TypeLabel"/>
+                    <isTypeOf>
+                      <GPSPosition rdf:ID="GPSPOS2">
+                        <hasType rdf:resource="#GPSPosition_label"/>
+                        <hasUID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        >!GPSPOS2</hasUID>
+                      </GPSPosition>
+                    </isTypeOf>
+                    <subsOVar>
+                      <OVariable rdf:ID="Ref_GPSPosition_gpsPositionWaterCol_WaterColumn_MFrag.gpsPos">
+                        <isOVariableIn>
+                          <Domain_MFrag rdf:ID="Domain_MFrag.Ref_GPSPosition_gpsPositionWaterCol_WaterColumn_MFrag">
+                            <hasResidentNode>
+                              <Domain_Res rdf:ID="Domain_Res.gpsPositionWaterCol">
+                                <hasContextInstance>
+                                  <Context rdf:ID="CX4_1_inner">
+                                    <isContextInstanceOf rdf:resource="#Domain_Res.gpsPositionWaterCol"/>
+                                    <isInnerTermOf>
+                                      <Context rdf:ID="CX4">
+                                        <hasInnerTerm rdf:resource="#CX4_1_inner"/>
+                                        <isContextNodeIn>
+                                          <Domain_MFrag rdf:ID="Domain_MFrag.WaterCurrent_MFrag">
+                                            <hasInputNode>
+                                              <Generative_input rdf:ID="IX5">
+                                                <hasPossibleValues>
+                                                  <CategoricalRVState rdf:ID="SOUTH">
+                                                    <hasType rdf:resource="#CategoryLabel"/>
+                                                    <isPossibleValueOf>
+                                                      <Generative_input rdf:ID="IX15">
+                                                        <rdfs:comment
+                                                         rdf:datatype=
+                                                        "http://www.w3.org/2001/XMLSchema#string"
+                                                        >IX15</rdfs:comment>
+                                                        <hasPossibleValues>
+                                                          <CategoricalRVState rdf:ID="NORTH">
+                                                            <hasType rdf:resource="#CategoryLabel"/>
+                                                            <isPossibleValueOf rdf:resource="#IX15"/>
+                                                            <isPossibleValueOf rdf:resource="#IX5"/>
+                                                            <isPossibleValueOf>
+                                                              <Domain_Res rdf:ID="Domain_Res.CA_direction">
+    <hasArgument>
+      <SimpleArgRelationship rdf:ID="CA_direction_1">
+        <isArgumentOf rdf:resource="#Domain_Res.CA_direction"/>
+        <hasArgNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+        >1</hasArgNumber>
+        <hasArgTerm>
+          <OVariable rdf:ID="CA_direction_MFrag.waybackpath">
+            <isArgTermIn>
+              <SimpleArgRelationship rdf:ID="IX15_1">
+                <isArgumentOf rdf:resource="#IX15"/>
+                <hasArgNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                >1</hasArgNumber>
+                <hasArgTerm rdf:resource="#CA_direction_MFrag.waybackpath"/>
+              </SimpleArgRelationship>
+            </isArgTermIn>
+            <isArgTermIn>
+              <SimpleArgRelationship rdf:ID="CX17_2">
+                <hasArgTerm rdf:resource="#CA_direction_MFrag.waybackpath"/>
+                <hasArgNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                >2</hasArgNumber>
+                <isArgumentOf rdf:resource="#CX17"/>
+              </SimpleArgRelationship>
+            </isArgTermIn>
+            <isArgTermIn>
+              <SimpleArgRelationship rdf:ID="CX16_2">
+                <hasArgTerm rdf:resource="#CA_direction_MFrag.waybackpath"/>
+                <hasArgNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                >2</hasArgNumber>
+                <isArgumentOf>
+                  <Context rdf:ID="CX16">
+                    <hasArgument rdf:resource="#CX16_2"/>
+                    <hasArgument>
+                      <ArgRelationship rdf:ID="CX16_1">
+                        <isArgumentOf rdf:resource="#CX16"/>
+                        <hasArgNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                        >1</hasArgNumber>
+                        <hasArgTerm rdf:resource="#CX16_1_inner"/>
+                      </ArgRelationship>
+                    </hasArgument>
+                    <isContextNodeIn>
+                      <Domain_MFrag rdf:ID="Domain_MFrag.Recoverable_MFrag">
+                        <hasOVariable>
+                          <OVariable rdf:ID="Recoverable_MFrag.waybackpath">
+                            <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                            >OX4</rdfs:comment>
+                            <isSubsBy rdf:resource="#CA_WayBackPath_label"/>
+                            <isOVariableIn rdf:resource="#Domain_MFrag.Recoverable_MFrag"/>
+                          </OVariable>
+                        </hasOVariable>
+                        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        ></rdfs:comment>
+                        <hasContextNode rdf:resource="#CX17_1_inner"/>
+                        <hasInputNode rdf:resource="#IX1"/>
+                        <hasOVariable>
+                          <OVariable rdf:ID="Recoverable_MFrag.autRob">
+                            <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                            >OX1</rdfs:comment>
+                            <isOVariableIn rdf:resource="#Domain_MFrag.Recoverable_MFrag"/>
+                            <isSubsBy rdf:resource="#AutonomousRobot_label"/>
+                          </OVariable>
+                        </hasOVariable>
+                        <hasInputNode rdf:resource="#IX2"/>
+                        <hasContextNode rdf:resource="#CX16_1_inner"/>
+                        <hasResidentNode>
+                          <Domain_Res rdf:ID="Domain_Res.Recoverable">
+                            <hasPossibleValues rdf:resource="#true"/>
+                            <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                            >RX1</rdfs:comment>
+                            <hasProbDist>
+                              <DeclarativeDist rdf:ID="Recoverable_Table">
+                                <isProbDistOf rdf:resource="#Domain_Res.Recoverable"/>
+                                <hasDeclaration rdf:datatype=
+                                "http://www.w3.org/2001/XMLSchema#string"
+                                >if any autRob have ( CA_vehicleBatteryLevel = Critical ) [
+	if any gpsPos have ( WaybackPosWatercurrentCost = High ) [
+		true = .1,
+		false = .9,
+		absurd = 0
+	] else [
+		true = .5,
+		false = .5,
+		absurd = 0
+	]
+] else if any autRob have ( CA_vehicleBatteryLevel = Low ) [
+	if any gpsPos have ( WaybackPosWatercurrentCost = High ) [
+		true = .15,
+		false = .85,
+		absurd = 0
+	] else [
+		true = .5,
+		false = .5,
+		absurd = 0
+	]
+] else if any autRob have ( CA_vehicleBatteryLevel = Medium ) [
+	if any gpsPos have ( WaybackPosWatercurrentCost = High ) [
+		true = .2,
+		false = .8,
+		absurd = 0
+	] else [
+		true = .5,
+		false = .5,
+		absurd = 0
+	]
+] else if any autRob have ( CA_vehicleBatteryLevel = High ) [
+	if any gpsPos have ( WaybackPosWatercurrentCost = High ) [
+		true = .25,
+		false = .75,
+		absurd = 0
+	] else [
+		true = .5,
+		false = .5,
+		absurd = 0
+	]
+] else if any autRob have ( CA_vehicleBatteryLevel = Full ) [
+	if any gpsPos have ( WaybackPosWatercurrentCost = High ) [
+		true = .3,
+		false = .7,
+		absurd = 0
+	] else [
+		true = .5,
+		false = .5,
+		absurd = 0
+	]
+] else [
+	true = .5,
+	false = .5,
+	absurd = 0
+]
+
+</hasDeclaration>             </DeclarativeDist>
+                            </hasProbDist>
+                            <hasParent rdf:resource="#IX2"/>
+                            <hasPossibleValues rdf:resource="#false"/>
+                            <isResidentNodeIn rdf:resource="#Domain_MFrag.Recoverable_MFrag"/>
+                            <hasPossibleValues rdf:resource="#absurd"/>
+                            <hasArgument>
+                              <SimpleArgRelationship rdf:ID="Recoverable_1">
+                                <hasArgTerm rdf:resource="#Ref_AutonomousRobot_hasGPSPosition_GPSPosition_MFrag.autRob"/>
+                                <hasArgNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                                >1</hasArgNumber>
+                                <isArgumentOf rdf:resource="#Domain_Res.Recoverable"/>
+                              </SimpleArgRelationship>
+                            </hasArgument>
+                            <hasParent rdf:resource="#IX1"/>
+                          </Domain_Res>
+                        </hasResidentNode>
+                        <hasContextNode rdf:resource="#CX16"/>
+                        <hasContextNode rdf:resource="#CX17"/>
+                        <isMFragOf rdf:resource="#MEBN"/>
+                        <hasOVariable>
+                          <OVariable rdf:ID="Recoverable_MFrag.gpsPos">
+                            <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                            >OX2</rdfs:comment>
+                            <isOVariableIn rdf:resource="#Domain_MFrag.Recoverable_MFrag"/>
+                            <isSubsBy rdf:resource="#GPSPosition_label"/>
+                          </OVariable>
+                        </hasOVariable>
+                      </Domain_MFrag>
+                    </isContextNodeIn>
+                    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                    >CX16</rdfs:comment>
+                    <isContextInstanceOf rdf:resource="#equalto"/>
+                    <hasInnerTerm rdf:resource="#CX16_1_inner"/>
+                  </Context>
+                </isArgumentOf>
+              </SimpleArgRelationship>
+            </isArgTermIn>
+            <isArgTermIn>
+              <SimpleArgRelationship rdf:ID="CX15_2">
+                <hasArgNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                >2</hasArgNumber>
+                <isArgumentOf>
+                  <Context rdf:ID="CX15">
+                    <isContextNodeIn>
+                      <Domain_MFrag rdf:ID="Domain_MFrag.WaybackPosWatercurrentCost_MFrag">
+                        <hasInputNode rdf:resource="#IX13"/>
+                        <hasContextNode rdf:resource="#CX15"/>
+                        <hasOVariable>
+                          <OVariable rdf:ID="WaybackPosWatercurrentCost_MFrag.waybackpath">
+                            <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                            >OX5</rdfs:comment>
+                            <isOVariableIn rdf:resource="#Domain_MFrag.WaybackPosWatercurrentCost_MFrag"/>
+                            <isSubsBy rdf:resource="#CA_WayBackPath_label"/>
+                          </OVariable>
+                        </hasOVariable>
+                        <hasOVariable>
+                          <OVariable rdf:ID="WaybackPosWatercurrentCost_MFrag.gpsPos">
+                            <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                            >OX4</rdfs:comment>
+                            <isOVariableIn rdf:resource="#Domain_MFrag.WaybackPosWatercurrentCost_MFrag"/>
+                            <isSubsBy rdf:resource="#GPSPosition_label"/>
+                          </OVariable>
+                        </hasOVariable>
+                        <hasContextNode>
+                          <Context rdf:ID="CX15_1_inner">
+                            <isContextInstanceOf>
+                              <Domain_Res rdf:ID="Domain_Res.isInPath">
+                                <hasArgument>
+                                  <SimpleArgRelationship rdf:ID="isInPath_1">
+                                    <hasArgTerm rdf:resource="#Ref_GPSPosition_isInPath_CA_WayBackPath_MFrag.gpsPos"/>
+                                    <hasArgNumber rdf:datatype=
+                                    "http://www.w3.org/2001/XMLSchema#int"
+                                    >1</hasArgNumber>
+                                    <isArgumentOf rdf:resource="#Domain_Res.isInPath"/>
+                                  </SimpleArgRelationship>
+                                </hasArgument>
+                                <isResidentNodeIn>
+                                  <Domain_MFrag rdf:ID="Domain_MFrag.Ref_GPSPosition_isInPath_CA_WayBackPath_MFrag">
+                                    <isMFragOf rdf:resource="#MEBN"/>
+                                    <hasResidentNode rdf:resource="#Domain_Res.isInPath"/>
+                                    <hasOVariable rdf:resource="#Ref_GPSPosition_isInPath_CA_WayBackPath_MFrag.gpsPos"/>
+                                    <rdfs:comment rdf:datatype=
+                                    "http://www.w3.org/2001/XMLSchema#string"
+                                    ></rdfs:comment>
+                                  </Domain_MFrag>
+                                </isResidentNodeIn>
+                                <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                >RX19</rdfs:comment>
+                                <hasPossibleValues rdf:resource="#CA_WayBackPath_label"/>
+                                <hasContextInstance rdf:resource="#CX17_1_inner"/>
+                                <hasContextInstance rdf:resource="#CX15_1_inner"/>
+                              </Domain_Res>
+                            </isContextInstanceOf>
+                            <hasArgument>
+                              <SimpleArgRelationship rdf:ID="CX15_1_inner_1">
+                                <hasArgTerm rdf:resource="#Ref_GPSPosition_isInPath_CA_WayBackPath_MFrag.gpsPos"/>
+                                <hasArgNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                                >1</hasArgNumber>
+                                <isArgumentOf rdf:resource="#CX15_1_inner"/>
+                              </SimpleArgRelationship>
+                            </hasArgument>
+                            <isContextNodeIn rdf:resource="#Domain_MFrag.WaybackPosWatercurrentCost_MFrag"/>
+                            <hasPossibleValues rdf:resource="#CA_WayBackPath_label"/>
+                            <isInnerTermOf rdf:resource="#CX15"/>
+                          </Context>
+                        </hasContextNode>
+                        <hasResidentNode rdf:resource="#Domain_Res.WaybackPosWatercurrentCost"/>
+                        <hasInputNode rdf:resource="#IX15"/>
+                        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        ></rdfs:comment>
+                        <isMFragOf rdf:resource="#MEBN"/>
+                      </Domain_MFrag>
+                    </isContextNodeIn>
+                    <isContextInstanceOf rdf:resource="#equalto"/>
+                    <hasInnerTerm rdf:resource="#CX15_1_inner"/>
+                    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                    >CX15</rdfs:comment>
+                    <hasArgument rdf:resource="#CX15_2"/>
+                    <hasArgument>
+                      <ArgRelationship rdf:ID="CX15_1">
+                        <hasArgTerm rdf:resource="#CX15_1_inner"/>
+                        <isArgumentOf rdf:resource="#CX15"/>
+                        <hasArgNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                        >1</hasArgNumber>
+                      </ArgRelationship>
+                    </hasArgument>
+                  </Context>
+                </isArgumentOf>
+                <hasArgTerm rdf:resource="#CA_direction_MFrag.waybackpath"/>
+              </SimpleArgRelationship>
+            </isArgTermIn>
+            <isArgTermIn rdf:resource="#CA_direction_1"/>
+            <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >OX1</rdfs:comment>
+            <isOVariableIn>
+              <Domain_MFrag rdf:ID="Domain_MFrag.CA_direction_MFrag">
+                <hasOVariable rdf:resource="#CA_direction_MFrag.waybackpath"/>
+                <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                ></rdfs:comment>
+                <isMFragOf rdf:resource="#MEBN"/>
+                <hasResidentNode rdf:resource="#Domain_Res.CA_direction"/>
+              </Domain_MFrag>
+            </isOVariableIn>
+            <isSubsBy rdf:resource="#CA_WayBackPath_label"/>
+          </OVariable>
+        </hasArgTerm>
+      </SimpleArgRelationship>
+    </hasArgument>
+    <hasInputInstance rdf:resource="#IX15"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >RX20</rdfs:comment>
+    <hasPossibleValues>
+      <CategoricalRVState rdf:ID="WEST">
+        <isPossibleValueOf rdf:resource="#IX15"/>
+        <isPossibleValueOf rdf:resource="#IX5"/>
+        <isPossibleValueOf rdf:resource="#Domain_Res.CA_direction"/>
+        <isPossibleValueOf>
+          <Domain_Res rdf:ID="Domain_Res.CA_waterCurrentDirection">
+            <hasArgument>
+              <SimpleArgRelationship rdf:ID="CA_waterCurrentDirection_1">
+                <hasArgTerm>
+                  <OVariable rdf:ID="WaterCurrent_MFrag.waterCurr">
+                    <isArgTermIn>
+                      <SimpleArgRelationship rdf:ID="IX6_1">
+                        <hasArgTerm rdf:resource="#WaterCurrent_MFrag.waterCurr"/>
+                        <hasArgNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                        >1</hasArgNumber>
+                        <isArgumentOf rdf:resource="#IX6"/>
+                      </SimpleArgRelationship>
+                    </isArgTermIn>
+                    <isArgTermIn>
+                      <SimpleArgRelationship rdf:ID="IX5_1">
+                        <hasArgTerm rdf:resource="#WaterCurrent_MFrag.waterCurr"/>
+                        <isArgumentOf rdf:resource="#IX5"/>
+                        <hasArgNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                        >1</hasArgNumber>
+                      </SimpleArgRelationship>
+                    </isArgTermIn>
+                    <isArgTermIn>
+                      <SimpleArgRelationship rdf:ID="CX5_2">
+                        <isArgumentOf>
+                          <Context rdf:ID="CX5">
+                            <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                            >CX5</rdfs:comment>
+                            <hasArgument rdf:resource="#CX5_2"/>
+                            <hasArgument>
+                              <ArgRelationship rdf:ID="CX5_1">
+                                <hasArgTerm rdf:resource="#CX5_1_inner"/>
+                                <hasArgNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                                >1</hasArgNumber>
+                                <isArgumentOf rdf:resource="#CX5"/>
+                              </ArgRelationship>
+                            </hasArgument>
+                            <hasInnerTerm rdf:resource="#CX5_1_inner"/>
+                            <isContextNodeIn rdf:resource="#Domain_MFrag.WaterCurrent_MFrag"/>
+                            <isContextInstanceOf rdf:resource="#equalto"/>
+                          </Context>
+                        </isArgumentOf>
+                        <hasArgTerm rdf:resource="#WaterCurrent_MFrag.waterCurr"/>
+                        <hasArgNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                        >2</hasArgNumber>
+                      </SimpleArgRelationship>
+                    </isArgTermIn>
+                    <isArgTermIn rdf:resource="#CA_waterCurrentDirection_1"/>
+                    <isArgTermIn>
+                      <SimpleArgRelationship rdf:ID="CA_waterCurrentVelocity_1">
+                        <isArgumentOf rdf:resource="#Domain_Res.CA_waterCurrentVelocity"/>
+                        <hasArgNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                        >1</hasArgNumber>
+                        <hasArgTerm rdf:resource="#WaterCurrent_MFrag.waterCurr"/>
+                      </SimpleArgRelationship>
+                    </isArgTermIn>
+                    <isSubsBy rdf:resource="#WaterCurrent_label"/>
+                    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                    >OX3</rdfs:comment>
+                    <isOVariableIn rdf:resource="#Domain_MFrag.WaterCurrent_MFrag"/>
+                  </OVariable>
+                </hasArgTerm>
+                <isArgumentOf rdf:resource="#Domain_Res.CA_waterCurrentDirection"/>
+                <hasArgNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                >1</hasArgNumber>
+              </SimpleArgRelationship>
+            </hasArgument>
+            <hasInputInstance rdf:resource="#IX5"/>
+            <isResidentNodeIn>
+              <Domain_MFrag rdf:ID="Domain_MFrag.CA_waterCurrentDirection_MFrag">
+                <hasResidentNode rdf:resource="#Domain_Res.CA_waterCurrentDirection"/>
+                <hasOVariable>
+                  <OVariable rdf:ID="CA_waterCurrentDirection_MFrag.waterCurr">
+                    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                    >OX1</rdfs:comment>
+                    <isOVariableIn rdf:resource="#Domain_MFrag.CA_waterCurrentDirection_MFrag"/>
+                    <isSubsBy rdf:resource="#WaterCurrent_label"/>
+                  </OVariable>
+                </hasOVariable>
+                <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                ></rdfs:comment>
+                <isMFragOf rdf:resource="#MEBN"/>
+              </Domain_MFrag>
+            </isResidentNodeIn>
+            <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >RX13</rdfs:comment>
+            <hasPossibleValues rdf:resource="#WEST"/>
+            <hasPossibleValues rdf:resource="#SOUTH"/>
+            <hasPossibleValues>
+              <CategoricalRVState rdf:ID="EAST">
+                <isPossibleValueOf rdf:resource="#IX15"/>
+                <isPossibleValueOf rdf:resource="#IX5"/>
+                <isPossibleValueOf rdf:resource="#Domain_Res.CA_direction"/>
+                <isPossibleValueOf rdf:resource="#Domain_Res.CA_waterCurrentDirection"/>
+                <hasType rdf:resource="#CategoryLabel"/>
+              </CategoricalRVState>
+            </hasPossibleValues>
+            <hasPossibleValues rdf:resource="#NORTH"/>
+          </Domain_Res>
+        </isPossibleValueOf>
+        <hasType rdf:resource="#CategoryLabel"/>
+      </CategoricalRVState>
+    </hasPossibleValues>
+    <hasPossibleValues rdf:resource="#SOUTH"/>
+    <hasPossibleValues rdf:resource="#EAST"/>
+    <hasPossibleValues rdf:resource="#NORTH"/>
+    <isResidentNodeIn rdf:resource="#Domain_MFrag.CA_direction_MFrag"/>
+                                                              </Domain_Res>
+                                                            </isPossibleValueOf>
+                                                            <isPossibleValueOf rdf:resource="#Domain_Res.CA_waterCurrentDirection"/>
+                                                          </CategoricalRVState>
+                                                        </hasPossibleValues>
+                                                        <isInputNodeIn rdf:resource="#Domain_MFrag.WaybackPosWatercurrentCost_MFrag"/>
+                                                        <hasPossibleValues rdf:resource="#EAST"/>
+                                                        <hasPossibleValues rdf:resource="#SOUTH"/>
+                                                        <hasPossibleValues rdf:resource="#WEST"/>
+                                                        <isInputInstanceOf rdf:resource="#Domain_Res.CA_direction"/>
+                                                        <hasArgument rdf:resource="#IX15_1"/>
+                                                        <isParentOf rdf:resource="#Domain_Res.WaybackPosWatercurrentCost"/>
+                                                      </Generative_input>
+                                                    </isPossibleValueOf>
+                                                    <isPossibleValueOf rdf:resource="#IX5"/>
+                                                    <isPossibleValueOf rdf:resource="#Domain_Res.CA_direction"/>
+                                                    <isPossibleValueOf rdf:resource="#Domain_Res.CA_waterCurrentDirection"/>
+                                                  </CategoricalRVState>
+                                                </hasPossibleValues>
+                                                <hasArgument rdf:resource="#IX5_1"/>
+                                                <isInputNodeIn rdf:resource="#Domain_MFrag.WaterCurrent_MFrag"/>
+                                                <hasPossibleValues rdf:resource="#WEST"/>
+                                                <rdfs:comment
+                                                 rdf:datatype=
+                                                "http://www.w3.org/2001/XMLSchema#string"
+                                                >IX5</rdfs:comment>
+                                                <isParentOf rdf:resource="#Domain_Res.WaterCurrent"/>
+                                                <hasPossibleValues rdf:resource="#EAST"/>
+                                                <hasPossibleValues rdf:resource="#NORTH"/>
+                                                <isInputInstanceOf rdf:resource="#Domain_Res.CA_waterCurrentDirection"/>
+                                              </Generative_input>
+                                            </hasInputNode>
+                                            <hasInputNode rdf:resource="#IX6"/>
+                                            <hasContextNode rdf:resource="#CX4"/>
+                                            <isMFragOf rdf:resource="#MEBN"/>
+                                            <hasContextNode rdf:resource="#CX4_1_inner"/>
+                                            <hasContextNode rdf:resource="#CX5_1_inner"/>
+                                            <rdfs:comment rdf:datatype=
+                                            "http://www.w3.org/2001/XMLSchema#string"
+                                            ></rdfs:comment>
+                                            <hasOVariable>
+                                              <OVariable rdf:ID="WaterCurrent_MFrag.gpsPos">
+                                                <isOVariableIn rdf:resource="#Domain_MFrag.WaterCurrent_MFrag"/>
+                                                <isSubsBy rdf:resource="#GPSPosition_label"/>
+                                                <rdfs:comment
+                                                 rdf:datatype=
+                                                "http://www.w3.org/2001/XMLSchema#string"
+                                                >OX1</rdfs:comment>
+                                              </OVariable>
+                                            </hasOVariable>
+                                            <hasOVariable rdf:resource="#WaterCurrent_MFrag.waterCurr"/>
+                                            <hasOVariable rdf:resource="#WaterCurrent_MFrag.waterCol"/>
+                                            <hasResidentNode rdf:resource="#Domain_Res.WaterCurrent"/>
+                                            <hasContextNode rdf:resource="#CX5"/>
+                                          </Domain_MFrag>
+                                        </isContextNodeIn>
+                                        <isContextInstanceOf rdf:resource="#equalto"/>
+                                        <rdfs:comment rdf:datatype=
+                                        "http://www.w3.org/2001/XMLSchema#string"
+                                        >CX4</rdfs:comment>
+                                        <hasArgument>
+                                          <SimpleArgRelationship rdf:ID="CX4_2">
+                                            <hasArgTerm rdf:resource="#WaterCurrent_MFrag.waterCol"/>
+                                            <hasArgNumber rdf:datatype=
+                                            "http://www.w3.org/2001/XMLSchema#int"
+                                            >2</hasArgNumber>
+                                            <isArgumentOf rdf:resource="#CX4"/>
+                                          </SimpleArgRelationship>
+                                        </hasArgument>
+                                        <hasArgument>
+                                          <ArgRelationship rdf:ID="CX4_1">
+                                            <hasArgNumber rdf:datatype=
+                                            "http://www.w3.org/2001/XMLSchema#int"
+                                            >1</hasArgNumber>
+                                            <isArgumentOf rdf:resource="#CX4"/>
+                                            <hasArgTerm rdf:resource="#CX4_1_inner"/>
+                                          </ArgRelationship>
+                                        </hasArgument>
+                                      </Context>
+                                    </isInnerTermOf>
+                                    <hasArgument>
+                                      <SimpleArgRelationship rdf:ID="CX4_1_inner_1">
+                                        <isArgumentOf rdf:resource="#CX4_1_inner"/>
+                                        <hasArgTerm rdf:resource="#Ref_GPSPosition_isInPath_CA_WayBackPath_MFrag.gpsPos"/>
+                                        <hasArgNumber rdf:datatype=
+                                        "http://www.w3.org/2001/XMLSchema#int"
+                                        >1</hasArgNumber>
+                                      </SimpleArgRelationship>
+                                    </hasArgument>
+                                    <isContextNodeIn rdf:resource="#Domain_MFrag.WaterCurrent_MFrag"/>
+                                    <hasPossibleValues>
+                                      <MetaEntity rdf:ID="WaterColumn_label">
+                                        <isTypeOf>
+                                          <WaterColumn rdf:ID="WATERCOL1">
+                                            <hasType rdf:resource="#WaterColumn_label"/>
+                                            <hasUID rdf:datatype=
+                                            "http://www.w3.org/2001/XMLSchema#string"
+                                            >!WATERCOL1</hasUID>
+                                          </WaterColumn>
+                                        </isTypeOf>
+                                        <isTypeOf>
+                                          <WaterColumn rdf:ID="WATERCOL2">
+                                            <hasType rdf:resource="#WaterColumn_label"/>
+                                            <hasUID rdf:datatype=
+                                            "http://www.w3.org/2001/XMLSchema#string"
+                                            >!WATERCOL2</hasUID>
+                                          </WaterColumn>
+                                        </isTypeOf>
+                                        <hasType rdf:resource="#TypeLabel"/>
+                                        <isPossibleValueOf rdf:resource="#CX4_1_inner"/>
+                                        <isPossibleValueOf rdf:resource="#Domain_Res.gpsPositionWaterCol"/>
+                                        <hasUID rdf:datatype=
+                                        "http://www.w3.org/2001/XMLSchema#string"
+                                        >!WaterColumn_label</hasUID>
+                                        <subsOVar rdf:resource="#WaterCurrent_MFrag.waterCol"/>
+                                        <subsOVar>
+                                          <OVariable rdf:ID="Ref_WaterColumn_hasWaterCurrent_WaterCurrent_MFrag.waterCol">
+                                            <rdfs:comment rdf:datatype=
+                                            "http://www.w3.org/2001/XMLSchema#string"
+                                            >OX1</rdfs:comment>
+                                            <isSubsBy rdf:resource="#WaterColumn_label"/>
+                                            <isOVariableIn rdf:resource="#Domain_MFrag.Ref_WaterColumn_hasWaterCurrent_WaterCurrent_MFrag"/>
+                                          </OVariable>
+                                        </subsOVar>
+                                      </MetaEntity>
+                                    </hasPossibleValues>
+                                  </Context>
+                                </hasContextInstance>
+                                <isResidentNodeIn rdf:resource="#Domain_MFrag.Ref_GPSPosition_gpsPositionWaterCol_WaterColumn_MFrag"/>
+                                <hasPossibleValues rdf:resource="#WaterColumn_label"/>
+                                <hasArgument>
+                                  <SimpleArgRelationship rdf:ID="gpsPositionWaterCol_1">
+                                    <isArgumentOf rdf:resource="#Domain_Res.gpsPositionWaterCol"/>
+                                    <hasArgTerm rdf:resource="#Ref_GPSPosition_isInPath_CA_WayBackPath_MFrag.gpsPos"/>
+                                    <hasArgNumber rdf:datatype=
+                                    "http://www.w3.org/2001/XMLSchema#int"
+                                    >1</hasArgNumber>
+                                  </SimpleArgRelationship>
+                                </hasArgument>
+                                <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                >RX11</rdfs:comment>
+                              </Domain_Res>
+                            </hasResidentNode>
+                            <isMFragOf rdf:resource="#MEBN"/>
+                            <hasOVariable rdf:resource="#Ref_GPSPosition_gpsPositionWaterCol_WaterColumn_MFrag.gpsPos"/>
+                          </Domain_MFrag>
+                        </isOVariableIn>
+                        <isSubsBy rdf:resource="#GPSPosition_label"/>
+                        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        >OX1</rdfs:comment>
+                      </OVariable>
+                    </subsOVar>
+                    <subsOVar rdf:resource="#Recoverable_MFrag.gpsPos"/>
+                    <subsOVar rdf:resource="#WaterCurrent_MFrag.gpsPos"/>
+                    <hasUID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                    >!GPSPosition_label</hasUID>
+                    <subsOVar rdf:resource="#WaybackPosWatercurrentCost_MFrag.gpsPos"/>
+                    <isTypeOf>
+                      <GPSPosition rdf:ID="GPSPOS1">
+                        <hasUID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        >!GPSPOS1</hasUID>
+                        <hasType rdf:resource="#GPSPosition_label"/>
+                      </GPSPosition>
+                    </isTypeOf>
+                    <subsOVar rdf:resource="#Ref_GPSPosition_isInPath_CA_WayBackPath_MFrag.gpsPos"/>
+                  </MetaEntity>
+                </isTypeOf>
+                <hasUID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >!TypeLabel</hasUID>
+                <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >This MetaEntity shold be assigned for the labels of all domain specific types and subtypes.</rdfs:comment>
+                <isTypeOf rdf:resource="#WaterColumn_label"/>
+                <isTypeOf>
+                  <MetaEntity rdf:ID="Position_label">
+                    <hasType rdf:resource="#TypeLabel"/>
+                    <hasUID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                    >!Position_label</hasUID>
+                  </MetaEntity>
+                </isTypeOf>
+                <isTypeOf>
+                  <MetaEntity rdf:ID="EnvironmentDomain_label">
+                    <hasUID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                    >!EnvironmentDomain_label</hasUID>
+                    <hasType rdf:resource="#TypeLabel"/>
+                  </MetaEntity>
+                </isTypeOf>
+                <isTypeOf>
+                  <MetaEntity rdf:ID="RoboticVehicleDomain_label">
+                    <hasType rdf:resource="#TypeLabel"/>
+                    <hasUID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                    >!RoboticVehicleDomain_label</hasUID>
+                  </MetaEntity>
+                </isTypeOf>
+                <isTypeOf>
+                  <MetaEntity rdf:ID="TemporalReference_label">
+                    <hasType rdf:resource="#TypeLabel"/>
+                    <hasUID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                    >!TemporalReference_label</hasUID>
+                  </MetaEntity>
+                </isTypeOf>
+                <isTypeOf rdf:resource="#TypeLabel"/>
+                <isTypeOf rdf:resource="#WaterCurrent_label"/>
+                <isTypeOf rdf:resource="#CA_WayBackPath_label"/>
+                <isTypeOf rdf:resource="#CategoryLabel"/>
+                <isTypeOf rdf:resource="#AutonomousRobot_label"/>
+                <isTypeOf>
+                  <MetaEntity rdf:ID="SensingData_label">
+                    <hasUID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                    >!SensingData_label</hasUID>
+                    <hasType rdf:resource="#TypeLabel"/>
+                  </MetaEntity>
+                </isTypeOf>
+                <hasType rdf:resource="#TypeLabel"/>
+              </MetaEntity>
+            </hasType>
+            <subsOVar rdf:resource="#Ref_AutonomousRobot_hasGPSPosition_GPSPosition_MFrag.autRob"/>
+            <subsOVar rdf:resource="#CA_vehicleBatteryLevel_MFrag.autRob"/>
+            <subsOVar>
+              <OVariable rdf:ID="Ref_AutonomousRobot_waybackPath_CA_WayBackPath_MFrag.autRob">
+                <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >OX1</rdfs:comment>
+                <isSubsBy rdf:resource="#AutonomousRobot_label"/>
+                <isOVariableIn rdf:resource="#Domain_MFrag.Ref_AutonomousRobot_waybackPath_CA_WayBackPath_MFrag"/>
+              </OVariable>
+            </subsOVar>
+            <subsOVar rdf:resource="#Recoverable_MFrag.autRob"/>
+          </MetaEntity>
+        </isSubsBy>
+      </OVariable>
+    </hasOVariable>                                           </Domain_MFrag>
+                                                            </isResidentNodeIn>
+                                                            <hasArgument>
+                                                              <SimpleArgRelationship rdf:ID="CA_vehicleBatteryLevel_1">
+    <hasArgTerm rdf:resource="#Ref_AutonomousRobot_hasGPSPosition_GPSPosition_MFrag.autRob"/>
+    <hasArgNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+    >1</hasArgNumber>
+    <isArgumentOf rdf:resource="#Domain_Res.CA_vehicleBatteryLevel"/>
+                                                              </SimpleArgRelationship>
+                                                            </hasArgument>
+                                                            <hasPossibleValues rdf:resource="#Critical"/>
+                                                            <rdfs:comment
+                                                             rdf:datatype=
+                                                            "http://www.w3.org/2001/XMLSchema#string"
+                                                            >RX2</rdfs:comment>
+                                                            <hasPossibleValues>
+                                                              <CategoricalRVState rdf:ID="Full">
+    <hasType rdf:resource="#CategoryLabel"/>
+    <isPossibleValueOf rdf:resource="#IX1"/>
+    <isPossibleValueOf rdf:resource="#Domain_Res.CA_vehicleBatteryLevel"/>
+                                                              </CategoricalRVState>
+                                                            </hasPossibleValues>
+                                                            <hasPossibleValues rdf:resource="#Medium"/>
+                                                          </Domain_Res>
+                                                        </isPossibleValueOf>
+                                                      </CategoricalRVState>
+                                                    </hasPossibleValues>
+                                                    <hasPossibleValues rdf:resource="#High"/>
+                                                    <isParentOf rdf:resource="#Domain_Res.Recoverable"/>
+                                                    <hasPossibleValues rdf:resource="#Low"/>
+                                                    <isInputNodeIn rdf:resource="#Domain_MFrag.Recoverable_MFrag"/>
+                                                    <rdfs:comment
+                                                     rdf:datatype=
+                                                    "http://www.w3.org/2001/XMLSchema#string"
+                                                    >IX1</rdfs:comment>
+                                                    <isInputInstanceOf rdf:resource="#Domain_Res.CA_vehicleBatteryLevel"/>
+                                                    <hasPossibleValues rdf:resource="#Full"/>
+                                                  </Generative_input>
+                                                </isPossibleValueOf>
+                                                <isPossibleValueOf rdf:resource="#IX6"/>
+                                                <isPossibleValueOf rdf:resource="#Domain_Res.CA_vehicleBatteryLevel"/>
+                                                <isPossibleValueOf rdf:resource="#Domain_Res.WaybackPosWatercurrentCost"/>
+                                                <isPossibleValueOf rdf:resource="#Domain_Res.CA_waterCurrentVelocity"/>
+                                                <hasType rdf:resource="#CategoryLabel"/>
+                                              </CategoricalRVState>
+                                            </hasPossibleValues>
+                                            <hasPossibleValues rdf:resource="#Low"/>
+                                            <hasArgument rdf:resource="#IX6_1"/>
+                                            <isInputNodeIn rdf:resource="#Domain_MFrag.WaterCurrent_MFrag"/>
+                                          </Generative_input>
+                                        </hasParent>
+                                        <hasPossibleValues>
+                                          <CategoricalRVState rdf:ID="Low_NORTH">
+                                            <hasType rdf:resource="#CategoryLabel"/>
+                                            <isPossibleValueOf rdf:resource="#IX13"/>
+                                            <isPossibleValueOf rdf:resource="#Domain_Res.WaterCurrent"/>
+                                          </CategoricalRVState>
+                                        </hasPossibleValues>
+                                        <hasPossibleValues>
+                                          <CategoricalRVState rdf:ID="High_EAST">
+                                            <hasType rdf:resource="#CategoryLabel"/>
+                                            <isPossibleValueOf rdf:resource="#IX13"/>
+                                            <isPossibleValueOf rdf:resource="#Domain_Res.WaterCurrent"/>
+                                          </CategoricalRVState>
+                                        </hasPossibleValues>
+                                        <hasProbDist>
+                                          <DeclarativeDist rdf:ID="WaterCurrent_Table">
+                                            <hasDeclaration rdf:datatype=
+                                            "http://www.w3.org/2001/XMLSchema#string"
+                                            >if any waterCurr have ( CA_waterCurrentDirection= NORTH ) [
+	if any waterCurr have ( CA_waterCurrentVelocity = High ) [
+		High_NORTH = 1,
+  		Medium_NORTH = 0,
+   		Low_NORTH = 0,
+   		High_EAST = 0,
+   		Medium_EAST = 0,
+   		Low_EAST = 0,
+   		High_SOUTH = 0,
+   		Medium_SOUTH = 0,
+		Low_SOUTH = 0,
+		High_WEST = 0,
+		Medium_WEST = 0,
+   		Low_WEST = 0
+	] else [
+   		High_NORTH = .08,
+  		Medium_NORTH = .08,
+   		Low_NORTH = .09,
+   		High_EAST = .08,
+   		Medium_EAST = .08,
+   		Low_EAST = .09,
+   		High_SOUTH = .08,
+   		Medium_SOUTH = .08,
+   		Low_SOUTH = .09,
+   		High_WEST = .08,
+   		Medium_WEST = .08,
+   		Low_WEST = .09
+	]
+] else [
+   	High_NORTH = .08,
+  	Medium_NORTH = .08,
+   	Low_NORTH = .09,
+   	High_EAST = .08,
+   	Medium_EAST = .08,
+   	Low_EAST = .09,
+   	High_SOUTH = .08,
+   	Medium_SOUTH = .08,
+   	Low_SOUTH = .09,
+   	High_WEST = .08,
+   	Medium_WEST = .08,
+   	Low_WEST = .09
+]
+</hasDeclaration>                           <isProbDistOf rdf:resource="#Domain_Res.WaterCurrent"/>
+                                          </DeclarativeDist>
+                                        </hasProbDist>
+                                        <rdfs:comment rdf:datatype=
+                                        "http://www.w3.org/2001/XMLSchema#string"
+                                        >RX10</rdfs:comment>
+                                        <hasPossibleValues>
+                                          <CategoricalRVState rdf:ID="Low_WEST">
+                                            <isPossibleValueOf rdf:resource="#IX13"/>
+                                            <isPossibleValueOf rdf:resource="#Domain_Res.WaterCurrent"/>
+                                            <hasType rdf:resource="#CategoryLabel"/>
+                                          </CategoricalRVState>
+                                        </hasPossibleValues>
+                                        <hasPossibleValues>
+                                          <CategoricalRVState rdf:ID="High_WEST">
+                                            <hasType rdf:resource="#CategoryLabel"/>
+                                            <isPossibleValueOf rdf:resource="#IX13"/>
+                                            <isPossibleValueOf rdf:resource="#Domain_Res.WaterCurrent"/>
+                                          </CategoricalRVState>
+                                        </hasPossibleValues>
+                                        <hasPossibleValues>
+                                          <CategoricalRVState rdf:ID="Medium_EAST">
+                                            <hasType rdf:resource="#CategoryLabel"/>
+                                            <isPossibleValueOf rdf:resource="#IX13"/>
+                                            <isPossibleValueOf rdf:resource="#Domain_Res.WaterCurrent"/>
+                                          </CategoricalRVState>
+                                        </hasPossibleValues>
+                                        <hasPossibleValues>
+                                          <CategoricalRVState rdf:ID="Low_EAST">
+                                            <hasType rdf:resource="#CategoryLabel"/>
+                                            <isPossibleValueOf rdf:resource="#IX13"/>
+                                            <isPossibleValueOf rdf:resource="#Domain_Res.WaterCurrent"/>
+                                          </CategoricalRVState>
+                                        </hasPossibleValues>
+                                        <hasInputInstance rdf:resource="#IX13"/>
+                                        <hasPossibleValues rdf:resource="#High_SOUTH"/>
+                                        <hasParent rdf:resource="#IX5"/>
+                                        <isResidentNodeIn rdf:resource="#Domain_MFrag.WaterCurrent_MFrag"/>
+                                        <hasPossibleValues>
+                                          <CategoricalRVState rdf:ID="Medium_NORTH">
+                                            <isPossibleValueOf rdf:resource="#IX13"/>
+                                            <isPossibleValueOf rdf:resource="#Domain_Res.WaterCurrent"/>
+                                            <hasType rdf:resource="#CategoryLabel"/>
+                                          </CategoricalRVState>
+                                        </hasPossibleValues>
+                                      </Domain_Res>
+                                    </isPossibleValueOf>
+                                    <hasType rdf:resource="#CategoryLabel"/>
+                                  </CategoricalRVState>
+                                </hasPossibleValues>
+                                <hasPossibleValues rdf:resource="#Medium_EAST"/>
+                                <hasPossibleValues rdf:resource="#Low_WEST"/>
+                                <hasPossibleValues rdf:resource="#Low_SOUTH"/>
+                                <hasPossibleValues rdf:resource="#Medium_WEST"/>
+                                <hasPossibleValues rdf:resource="#High_WEST"/>
+                                <hasPossibleValues rdf:resource="#Medium_NORTH"/>
+                                <hasPossibleValues rdf:resource="#Low_NORTH"/>
+                                <isParentOf rdf:resource="#Domain_Res.WaybackPosWatercurrentCost"/>
+                                <isInputInstanceOf rdf:resource="#Domain_Res.WaterCurrent"/>
+                                <isInputNodeIn rdf:resource="#Domain_MFrag.WaybackPosWatercurrentCost_MFrag"/>
+                                <hasPossibleValues rdf:resource="#Medium_SOUTH"/>
+                                <hasPossibleValues rdf:resource="#High_EAST"/>
+                                <hasPossibleValues rdf:resource="#Low_EAST"/>
+                                <hasArgument>
+                                  <SimpleArgRelationship rdf:ID="IX13_1">
+                                    <hasArgNumber rdf:datatype=
+                                    "http://www.w3.org/2001/XMLSchema#int"
+                                    >1</hasArgNumber>
+                                    <isArgumentOf rdf:resource="#IX13"/>
+                                    <hasArgTerm rdf:resource="#Ref_GPSPosition_isInPath_CA_WayBackPath_MFrag.gpsPos"/>
+                                  </SimpleArgRelationship>
+                                </hasArgument>
+                                <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                >IX13</rdfs:comment>
+                                <hasPossibleValues rdf:resource="#High_NORTH"/>
+                              </Generative_input>
+                            </hasParent>
+                            <hasProbDist>
+                              <DeclarativeDist rdf:ID="WaybackPosWatercurrentCost_Table">
+                                <hasDeclaration rdf:datatype=
+                                "http://www.w3.org/2001/XMLSchema#string"
+                                >if any gpsPos have ( WaterCurrent = High_NORTH | WaterCurrent = Medium_NORTH) [
+	if any waybackpath have ( CA_direction = SOUTH ) [
+	   	High = .9,
+	   	Medium = .07,
+ 	  	Low = .03
+	] else [
+   		High = .3,
+   		Medium = .4,
+   		Low = .3
+	]
+] else [
+	High = .3,
+	Medium = .4,
+	Low = .3
+]
+
+</hasDeclaration>               <isProbDistOf rdf:resource="#Domain_Res.WaybackPosWatercurrentCost"/>
+                              </DeclarativeDist>
+                            </hasProbDist>
+                            <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                            >RX3</rdfs:comment>
+                            <hasInputInstance rdf:resource="#IX2"/>
+                            <hasArgument rdf:resource="#WaybackPosWatercurrentCost_1"/>
+                            <hasPossibleValues rdf:resource="#High"/>
+                            <hasPossibleValues rdf:resource="#Medium"/>
+                            <hasPossibleValues rdf:resource="#Low"/>
+                            <isResidentNodeIn rdf:resource="#Domain_MFrag.WaybackPosWatercurrentCost_MFrag"/>
+                            <hasParent rdf:resource="#IX15"/>
+                          </Domain_Res>
+                        </isArgumentOf>
+                        <hasArgNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                        >1</hasArgNumber>
+                      </SimpleArgRelationship>
+                    </isArgTermIn>
+                    <isArgTermIn rdf:resource="#gpsPositionWaterCol_1"/>
+                    <isOVariableIn rdf:resource="#Domain_MFrag.Ref_GPSPosition_isInPath_CA_WayBackPath_MFrag"/>
+                    <isArgTermIn rdf:resource="#CX15_1_inner_1"/>
+                    <isArgTermIn rdf:resource="#IX13_1"/>
+                    <isSubsBy rdf:resource="#GPSPosition_label"/>
+                    <isArgTermIn rdf:resource="#CX4_1_inner_1"/>
+                    <isArgTermIn rdf:resource="#isInPath_1"/>
+                    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                    >OX1</rdfs:comment>
+                    <isArgTermIn rdf:resource="#WaterCurrent_1"/>
+                    <isArgTermIn rdf:resource="#IX2_1"/>
+                    <isArgTermIn>
+                      <SimpleArgRelationship rdf:ID="CX17_1_inner_1">
+                        <hasArgTerm rdf:resource="#Ref_GPSPosition_isInPath_CA_WayBackPath_MFrag.gpsPos"/>
+                        <hasArgNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                        >1</hasArgNumber>
+                        <isArgumentOf rdf:resource="#CX17_1_inner"/>
+                      </SimpleArgRelationship>
+                    </isArgTermIn>
+                  </OVariable>
+                </hasArgTerm>
+                <hasArgNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                >1</hasArgNumber>
+                <isArgumentOf rdf:resource="#IX2"/>
+              </SimpleArgRelationship>
+            </hasArgument>
+            <isParentOf rdf:resource="#Domain_Res.Recoverable"/>
+            <hasPossibleValues rdf:resource="#Medium"/>
+            <hasPossibleValues rdf:resource="#High"/>
+            <hasPossibleValues rdf:resource="#Low"/>
+            <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            >IX2</rdfs:comment>
+            <isInputInstanceOf rdf:resource="#Domain_Res.WaybackPosWatercurrentCost"/>
+            <isInputNodeIn rdf:resource="#Domain_MFrag.Recoverable_MFrag"/>
+          </Generative_input>
+        </isPossibleValueOf>
+        <isPossibleValueOf rdf:resource="#IX1"/>
+        <isPossibleValueOf rdf:resource="#IX6"/>
+        <isPossibleValueOf rdf:resource="#Domain_Res.CA_vehicleBatteryLevel"/>
+        <isPossibleValueOf rdf:resource="#Domain_Res.WaybackPosWatercurrentCost"/>
+        <isPossibleValueOf rdf:resource="#Domain_Res.CA_waterCurrentVelocity"/>
+      </CategoricalRVState>
+    </isTypeOf>
+    <isTypeOf>
+      <CategoricalRVState rdf:ID="West">
+        <hasType rdf:resource="#CategoryLabel"/>
+      </CategoricalRVState>
+    </isTypeOf>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This MetaEntity should be assigned to the labels for the states of random variables whose domain is a list of categorical values</rdfs:comment>
+    <isTypeOf>
+      <CategoricalRVState rdf:ID="SOUT">
+        <hasType rdf:resource="#CategoryLabel"/>
+      </CategoricalRVState>
+    </isTypeOf>
+    <isTypeOf>
+      <CategoricalRVState rdf:ID="East">
+        <hasType rdf:resource="#CategoryLabel"/>
+      </CategoricalRVState>
+    </isTypeOf>
+    <isTypeOf rdf:resource="#Low_SOUTH"/>
+    <isTypeOf>
+      <CategoricalRVState rdf:ID="South">
+        <hasType rdf:resource="#CategoryLabel"/>
+      </CategoricalRVState>
+    </isTypeOf>
+    <isTypeOf rdf:resource="#High_NORTH"/>
+    <isTypeOf>
+      <CategoricalRVState rdf:ID="high">
+        <hasType rdf:resource="#CategoryLabel"/>
+      </CategoricalRVState>
+    </isTypeOf>
+    <isTypeOf>
+      <CategoricalRVState rdf:ID="mEDIUM_nort">
+        <hasType rdf:resource="#CategoryLabel"/>
+      </CategoricalRVState>
+    </isTypeOf>
+    <isTypeOf rdf:resource="#Critical"/>
+    <isTypeOf rdf:resource="#High_SOUTH"/>
+    <isTypeOf rdf:resource="#SOUTH"/>
+    <isTypeOf rdf:resource="#Low"/>
+    <isTypeOf rdf:resource="#NORTH"/>
+    <isTypeOf rdf:resource="#Low_WEST"/>
+    <isTypeOf>
+      <CategoricalRVState rdf:ID="HIGH">
+        <hasType rdf:resource="#CategoryLabel"/>
+      </CategoricalRVState>
+    </isTypeOf>
+    <isTypeOf rdf:resource="#Medium_EAST"/>
+    <isTypeOf rdf:resource="#Low_EAST"/>
+    <isTypeOf rdf:resource="#Full"/>
+    <isTypeOf>
+      <CategoricalRVState rdf:ID="Empty">
+        <hasType rdf:resource="#CategoryLabel"/>
+      </CategoricalRVState>
+    </isTypeOf>
+    <isTypeOf rdf:resource="#High_WEST"/>
+    <isTypeOf rdf:resource="#Medium_WEST"/>
+    <isTypeOf>
+      <CategoricalRVState rdf:ID="MEDIUM">
+        <hasType rdf:resource="#CategoryLabel"/>
+      </CategoricalRVState>
+    </isTypeOf>
+    <isTypeOf rdf:resource="#Low_NORTH"/>
+    <isTypeOf rdf:resource="#High_EAST"/>
+    <hasType rdf:resource="#TypeLabel"/>
+    <isTypeOf rdf:resource="#EAST"/>
+    <isTypeOf rdf:resource="#High"/>
+    <isTypeOf rdf:resource="#WEST"/>
+    <isTypeOf>
+      <CategoricalRVState rdf:ID="LOW">
+        <hasType rdf:resource="#CategoryLabel"/>
+      </CategoricalRVState>
+    </isTypeOf>
+    <isTypeOf rdf:resource="#Medium_SOUTH"/>
+    <isTypeOf rdf:resource="#Medium_NORTH"/>
+    <hasUID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >!CategoryLabel</hasUID>                                  </MetaEntity>
+                                                            </hasType>
+                                                            <isPossibleValueOf rdf:resource="#IX2"/>
+                                                            <isPossibleValueOf rdf:resource="#IX1"/>
+                                                            <isPossibleValueOf rdf:resource="#IX6"/>
+                                                            <isPossibleValueOf rdf:resource="#Domain_Res.CA_vehicleBatteryLevel"/>
+                                                            <isPossibleValueOf rdf:resource="#Domain_Res.WaybackPosWatercurrentCost"/>
+                                                            <isPossibleValueOf rdf:resource="#Domain_Res.CA_waterCurrentVelocity"/>
+                                                          </CategoricalRVState>
+                                                        </hasPossibleValues>
+                                                        <hasPossibleValues rdf:resource="#Medium"/>
+                                                        <hasPossibleValues rdf:resource="#High"/>
+                                                        <hasInputInstance rdf:resource="#IX6"/>
+                                                        <hasArgument rdf:resource="#CA_waterCurrentVelocity_1"/>
+                                                        <isResidentNodeIn rdf:resource="#Domain_MFrag.CA_waterCurrentVelocity_MFrag"/>
+                                                      </Domain_Res>
+                                                    </hasResidentNode>
+                                                    <isMFragOf rdf:resource="#MEBN"/>
+                                                    <rdfs:comment
+                                                     rdf:datatype=
+                                                    "http://www.w3.org/2001/XMLSchema#string"
+                                                    ></rdfs:comment>
+                                                  </Domain_MFrag>
+                                                </isOVariableIn>
+                                                <isSubsBy rdf:resource="#WaterCurrent_label"/>
+                                              </OVariable>
+                                            </subsOVar>
+                                            <hasType rdf:resource="#TypeLabel"/>
+                                            <subsOVar rdf:resource="#WaterCurrent_MFrag.waterCurr"/>
+                                            <hasUID rdf:datatype=
+                                            "http://www.w3.org/2001/XMLSchema#string"
+                                            >!WaterCurrent_label</hasUID>
+                                            <isPossibleValueOf rdf:resource="#CX5_1_inner"/>
+                                            <isPossibleValueOf rdf:resource="#Domain_Res.hasWaterCurrent"/>
+                                            <subsOVar rdf:resource="#CA_waterCurrentDirection_MFrag.waterCurr"/>
+                                            <isTypeOf>
+                                              <WaterCurrent rdf:ID="WATERCURR1">
+                                                <hasUID rdf:datatype=
+                                                "http://www.w3.org/2001/XMLSchema#string"
+                                                >!WATERCURR1</hasUID>
+                                                <hasType rdf:resource="#WaterCurrent_label"/>
+                                              </WaterCurrent>
+                                            </isTypeOf>
+                                            <isTypeOf>
+                                              <WaterCurrent rdf:ID="WATERCURR2">
+                                                <hasType rdf:resource="#WaterCurrent_label"/>
+                                                <hasUID rdf:datatype=
+                                                "http://www.w3.org/2001/XMLSchema#string"
+                                                >!WATERCURR2</hasUID>
+                                              </WaterCurrent>
+                                            </isTypeOf>
+                                          </MetaEntity>
+                                        </hasPossibleValues>
+                                        <hasArgument rdf:resource="#CX5_1_inner_1"/>
+                                        <isInnerTermOf rdf:resource="#CX5"/>
+                                        <isContextNodeIn rdf:resource="#Domain_MFrag.WaterCurrent_MFrag"/>
+                                      </Context>
+                                    </isArgumentOf>
+                                  </SimpleArgRelationship>
+                                </isArgTermIn>
+                                <isArgTermIn rdf:resource="#CX4_2"/>
+                                <isArgTermIn rdf:resource="#hasWaterCurrent_1"/>
+                                <isOVariableIn rdf:resource="#Domain_MFrag.WaterCurrent_MFrag"/>
+                                <isSubsBy rdf:resource="#WaterColumn_label"/>
+                                <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                                >OX2</rdfs:comment>
+                              </OVariable>
+                            </hasArgTerm>
+                            <hasArgNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+                            >1</hasArgNumber>
+                            <isArgumentOf rdf:resource="#Domain_Res.hasWaterCurrent"/>
+                          </SimpleArgRelationship>
+                        </hasArgument>
+                        <hasPossibleValues rdf:resource="#WaterCurrent_label"/>
+                        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        >RX12</rdfs:comment>
+                        <hasContextInstance rdf:resource="#CX5_1_inner"/>
+                      </Domain_Res>
+                    </hasResidentNode>
+                    <hasOVariable rdf:resource="#Ref_WaterColumn_hasWaterCurrent_WaterCurrent_MFrag.waterCol"/>
+                    <isMFragOf rdf:resource="#MEBN"/>
+                  </Domain_MFrag>
+                </hasMFrag>
+                <hasMFrag rdf:resource="#Domain_MFrag.CA_waterCurrentVelocity_MFrag"/>
+                <hasMFrag rdf:resource="#Domain_MFrag.Ref_GPSPosition_gpsPositionWaterCol_WaterColumn_MFrag"/>
+                <hasMFrag rdf:resource="#Domain_MFrag.CA_waterCurrentDirection_MFrag"/>
+                <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                ></rdfs:comment>
+                <hasMFrag rdf:resource="#Domain_MFrag.WaterCurrent_MFrag"/>
+                <hasMFrag rdf:resource="#Domain_MFrag.WaybackPosWatercurrentCost_MFrag"/>
+                <hasMFrag rdf:resource="#Domain_MFrag.Recoverable_MFrag"/>
+                <hasMFrag rdf:resource="#Domain_MFrag.Ref_GPSPosition_isInPath_CA_WayBackPath_MFrag"/>
+                <hasMFrag rdf:resource="#Domain_MFrag.Ref_AutonomousRobot_waybackPath_CA_WayBackPath_MFrag"/>
+                <hasMFrag rdf:resource="#Domain_MFrag.CA_direction_MFrag"/>
+                <hasMFrag rdf:resource="#Domain_MFrag.CA_vehicleBatteryLevel_MFrag"/>
+                <hasMFrag rdf:resource="#Domain_MFrag.Ref_AutonomousRobot_hasGPSPosition_GPSPosition_MFrag"/>
+              </MTheory>
+            </isMFragOf>
+            <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+            ></rdfs:comment>
+            <hasOVariable rdf:resource="#Ref_AutonomousRobot_waybackPath_CA_WayBackPath_MFrag.autRob"/>
+          </Domain_MFrag>
+        </isResidentNodeIn>
+        <hasPossibleValues rdf:resource="#CA_WayBackPath_label"/>
+        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+        >RX17</rdfs:comment>
+        <hasArgument rdf:resource="#waybackPath_1"/>
+      </Domain_Res>
+    </isArgumentOf>
+    <hasArgNumber rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+    >1</hasArgNumber>
+    <hasArgTerm rdf:resource="#Ref_AutonomousRobot_hasGPSPosition_GPSPosition_MFrag.autRob"/>
+                                                              </SimpleArgRelationship>
+                                                            </isArgTermIn>
+                                                            <isArgTermIn rdf:resource="#hasGPSPosition_1"/>
+                                                            <isArgTermIn rdf:resource="#IX1_1"/>
+                                                            <isArgTermIn rdf:resource="#Recoverable_1"/>
+                                                            <isSubsBy rdf:resource="#AutonomousRobot_label"/>
+                                                            <rdfs:comment
+                                                             rdf:datatype=
+                                                            "http://www.w3.org/2001/XMLSchema#string"
+                                                            >OX1</rdfs:comment>
+                                                            <isArgTermIn rdf:resource="#CX16_1_inner_1"/>
+                                                            <isArgTermIn rdf:resource="#CA_vehicleBatteryLevel_1"/>
+                                                            <isOVariableIn rdf:resource="#Domain_MFrag.Ref_AutonomousRobot_hasGPSPosition_GPSPosition_MFrag"/>
+                                                          </OVariable>
+                                                        </hasArgTerm>
+                                                        <hasArgNumber
+                                                         rdf:datatype=
+                                                        "http://www.w3.org/2001/XMLSchema#int"
+                                                        >1</hasArgNumber>
+                                                        <isArgumentOf rdf:resource="#CX16_1_inner"/>
+                                                      </SimpleArgRelationship>
+                                                    </hasArgument>
+                                                    <isContextNodeIn rdf:resource="#Domain_MFrag.Recoverable_MFrag"/>
+                                                    <hasPossibleValues rdf:resource="#CA_WayBackPath_label"/>
+                                                    <isContextInstanceOf rdf:resource="#Domain_Res.waybackPath"/>
+                                                    <isInnerTermOf rdf:resource="#CX16"/>
+                                                  </Context>
+                                                </isPossibleValueOf>
+                                                <isPossibleValueOf rdf:resource="#CX15_1_inner"/>
+                                                <hasType rdf:resource="#TypeLabel"/>
+                                                <subsOVar rdf:resource="#Recoverable_MFrag.waybackpath"/>
+                                                <hasUID rdf:datatype=
+                                                "http://www.w3.org/2001/XMLSchema#string"
+                                                >!CA_WayBackPath_label</hasUID>
+                                                <isTypeOf>
+                                                  <CA_WayBackPath rdf:ID="WBP1">
+                                                    <hasType rdf:resource="#CA_WayBackPath_label"/>
+                                                    <hasUID rdf:datatype=
+                                                    "http://www.w3.org/2001/XMLSchema#string"
+                                                    >!WBP1</hasUID>
+                                                  </CA_WayBackPath>
+                                                </isTypeOf>
+                                                <subsOVar rdf:resource="#CA_direction_MFrag.waybackpath"/>
+                                                <isPossibleValueOf rdf:resource="#Domain_Res.waybackPath"/>
+                                                <subsOVar rdf:resource="#WaybackPosWatercurrentCost_MFrag.waybackpath"/>
+                                                <isPossibleValueOf rdf:resource="#CX17_1_inner"/>
+                                                <isPossibleValueOf rdf:resource="#Domain_Res.isInPath"/>
+                                              </MetaEntity>
+                                            </hasPossibleValues>
+                                            <hasArgument rdf:resource="#CX17_1_inner_1"/>
+                                            <isInnerTermOf rdf:resource="#CX17"/>
+                                            <isContextNodeIn rdf:resource="#Domain_MFrag.Recoverable_MFrag"/>
+                                            <isContextInstanceOf rdf:resource="#Domain_Res.isInPath"/>
+                                          </Context>
+                                        </hasInnerTerm>
+                                        <hasArgument rdf:resource="#CX17_2"/>
+                                        <hasArgument>
+                                          <ArgRelationship rdf:ID="CX17_1">
+                                            <isArgumentOf rdf:resource="#CX17"/>
+                                            <hasArgNumber rdf:datatype=
+                                            "http://www.w3.org/2001/XMLSchema#int"
+                                            >1</hasArgNumber>
+                                            <hasArgTerm rdf:resource="#CX17_1_inner"/>
+                                          </ArgRelationship>
+                                        </hasArgument>
+                                        <isContextNodeIn rdf:resource="#Domain_MFrag.Recoverable_MFrag"/>
+                                        <rdfs:comment rdf:datatype=
+                                        "http://www.w3.org/2001/XMLSchema#string"
+                                        >CX17</rdfs:comment>
+                                      </Context>
+                                    </hasContextInstance>
+                                    <hasContextInstance rdf:resource="#CX16"/>
+                                    <hasContextInstance rdf:resource="#CX15"/>
+                                    <hasContextInstance rdf:resource="#CX5"/>
+                                    <hasContextInstance rdf:resource="#CX4"/>
+                                  </BuiltInRV>
+                                </isPossibleValueOf>
+                                <isPossibleValueOf>
+                                  <BuiltInRV rdf:ID="implies">
+                                    <hasPossibleValues rdf:resource="#true"/>
+                                    <hasPossibleValues rdf:resource="#absurd"/>
+                                    <hasPossibleValues rdf:resource="#false"/>
+                                  </BuiltInRV>
+                                </isPossibleValueOf>
+                                <hasType rdf:resource="#Boolean"/>
+                                <isPossibleValueOf>
+                                  <BuiltInRV rdf:ID="or">
+                                    <hasPossibleValues rdf:resource="#true"/>
+                                    <hasPossibleValues rdf:resource="#absurd"/>
+                                    <hasPossibleValues rdf:resource="#false"/>
+                                  </BuiltInRV>
+                                </isPossibleValueOf>
+                                <isPossibleValueOf rdf:resource="#Domain_Res.Recoverable"/>
+                                <isPossibleValueOf>
+                                  <BuiltInRV rdf:ID="not">
+                                    <hasPossibleValues rdf:resource="#true"/>
+                                    <hasPossibleValues rdf:resource="#absurd"/>
+                                    <hasPossibleValues rdf:resource="#false"/>
+                                  </BuiltInRV>
+                                </isPossibleValueOf>
+                              </BooleanRVState>
+                            </hasPossibleValues>
+                          </BuiltInRV>
+                        </isPossibleValueOf>
+                        <isPossibleValueOf rdf:resource="#iff"/>
+                        <isPossibleValueOf rdf:resource="#implies"/>
+                        <isPossibleValueOf rdf:resource="#exists"/>
+                        <hasUID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        >⊥</hasUID>
+                        <isPossibleValueOf rdf:resource="#or"/>
+                        <isPossibleValueOf rdf:resource="#and"/>
+                        <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                        >This state is used for the cases in which a truth-value cannot be applied to a random variable (i.e. meaningless, undefined, or contradictory hypotheses).</rdfs:comment>
+                        <hasType rdf:resource="#Boolean"/>
+                        <isPossibleValueOf rdf:resource="#equalto"/>
+                        <isPossibleValueOf rdf:resource="#not"/>
+                        <isPossibleValueOf rdf:resource="#Domain_Res.Recoverable"/>
+                      </BooleanRVState>
+                    </hasPossibleValues>
+                    <hasPossibleValues rdf:resource="#false"/>
+                  </BuiltInRV>
+                </isPossibleValueOf>
+                <isPossibleValueOf rdf:resource="#not"/>
+                <isPossibleValueOf rdf:resource="#forall"/>
+                <hasType rdf:resource="#Boolean"/>
+                <isPossibleValueOf rdf:resource="#iff"/>
+                <isPossibleValueOf rdf:resource="#or"/>
+                <isPossibleValueOf rdf:resource="#Domain_Res.Recoverable"/>
+                <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >This state corresponds to the meaningfull hypotheses that have a false truth-value.</rdfs:comment>
+                <hasUID rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+                >T</hasUID>
+                <isPossibleValueOf rdf:resource="#and"/>
+                <isPossibleValueOf rdf:resource="#implies"/>
+                <isPossibleValueOf rdf:resource="#equalto"/>
+              </BooleanRVState>
+              <BooleanRVState rdf:about="#absurd"/>
+            </owl:oneOf>
+          </owl:Class>
+        </owl:someValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasPossibleValues"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class rdf:ID="Finding_input"/>
+        </owl:allValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasParent"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom>
+          <owl:Class rdf:about="#Finding_input"/>
+        </owl:someValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasParent"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <owl:disjointWith rdf:resource="#BuiltInRV"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class rdf:ID="Finding_MFrag"/>
+        </owl:allValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="isResidentNodeIn"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class>
+            <owl:oneOf rdf:parseType="Collection">
+              <BooleanRVState rdf:about="#true"/>
+              <BooleanRVState rdf:about="#absurd"/>
+            </owl:oneOf>
+          </owl:Class>
+        </owl:allValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasPossibleValues"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom>
+          <owl:Class rdf:about="#Finding_MFrag"/>
+        </owl:someValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isResidentNodeIn"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="SimpleArgRelationship">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Each generic random variable can have many arguments. Arguments are usually restricted in their type and meaning via the context nodes of an MFrag. In order to model these complex N-ary relations, PR-OWL makes use of the SimpleArgRelationship class, which is a reified relation that conveys the number and order of arguments that each RV expects, it's type (defined via a link to the TypeContext class), and the link to the RV itself.</rdfs:comment>
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <owl:Restriction>
+            <owl:onProperty>
+              <owl:FunctionalProperty rdf:ID="isArgumentOf"/>
+            </owl:onProperty>
+            <owl:maxCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+            >1</owl:maxCardinality>
+          </owl:Restriction>
+          <owl:Restriction>
+            <owl:someValuesFrom>
+              <owl:Class rdf:ID="OVariable"/>
+            </owl:someValuesFrom>
+            <owl:onProperty>
+              <owl:FunctionalProperty rdf:ID="hasArgTerm"/>
+            </owl:onProperty>
+          </owl:Restriction>
+          <owl:Restriction>
+            <owl:onProperty>
+              <owl:FunctionalProperty rdf:about="#isArgumentOf"/>
+            </owl:onProperty>
+            <owl:allValuesFrom>
+              <owl:Class rdf:ID="Node"/>
+            </owl:allValuesFrom>
+          </owl:Restriction>
+          <owl:Restriction>
+            <owl:allValuesFrom>
+              <owl:Class rdf:about="#OVariable"/>
+            </owl:allValuesFrom>
+            <owl:onProperty>
+              <owl:FunctionalProperty rdf:about="#hasArgTerm"/>
+            </owl:onProperty>
+          </owl:Restriction>
+          <owl:Class rdf:ID="ArgRelationship"/>
+        </owl:intersectionOf>
+      </owl:Class>
+    </owl:equivalentClass>
+  </owl:Class>
+  <owl:Class rdf:ID="RoboticVehicleDomain">
+    <rdfs:subClassOf>
+      <owl:Class rdf:ID="ObjectEntity"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="Context">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#Node"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="hasInnerTerm"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="#Context"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class rdf:ID="Entity"/>
+        </owl:allValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasPossibleValues"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Input"/>
+    </owl:disjointWith>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >In general, MFrags impose constraints to the type of arguments each of its resident RVs should accept. The individuals of the Context class represent these types of constraints.
+In PR-OWL, the class Context is the only subclass of the Node class that accepts composite RV terms as arguments (that is, uses the complete ArgRelationship instead of the more restricted SimpleArgRelashionship).
+A context node is either satisfiable or not, which means its possible states are instances of  the BooleanRVStates class.</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom>
+          <owl:Class rdf:about="#Entity"/>
+        </owl:someValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasPossibleValues"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Resident"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="isContextInstanceOf"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class rdf:ID="Domain_MFrag"/>
+        </owl:allValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="isContextNodeIn"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="WaterCurrent">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#EnvironmentDomain"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="AutonomousRobot">
+    <rdfs:subClassOf rdf:resource="#RoboticVehicleDomain"/>
+  </owl:Class>
+  <owl:Class rdf:ID="MTheory">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom>
+          <owl:Class rdf:ID="MFrag"/>
+        </owl:someValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="hasMFrag"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class rdf:about="#MFrag"/>
+        </owl:allValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasMFrag"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >An MTheory is a collection of MFrags that statisfies consistency constraints ensuring the existence of a unique joint distribution over the random variables mentioned in the MTheory. In PR-OWL, the class MTheory allows a probabilistic ontology to have more than one valid MTheory to represent its RVs, and each individual of that class is basically a list of the MFrags that collectively form that MTheory. In addition, one MFrag can be part of more than one MTheory.</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:about="#ObjectEntity">
+    <owl:disjointWith>
+      <owl:Class rdf:ID="MetaEntity"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="CategoricalRVState"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#BooleanRVState"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#Entity"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class rdf:about="#OVariable"/>
+        </owl:allValuesFrom>
+        <owl:onProperty>
+          <owl:InverseFunctionalProperty rdf:ID="subsOVar"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >The class ObjectEntity aggregates the MEBN entities that are real world concepts of interest in a domain. They are akin to objects in OO models and to frames in frame-based knowledge systems.</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:ID="CondRelationship">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="hasParentState"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class rdf:about="#Entity"/>
+        </owl:allValuesFrom>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#hasParentState"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >The conditional relationship class is a reified property representing a (parent) node and one of its possible states. Individuals of this class are used to built PR-OWL probabilistic distribution tables. Each cell of such a table corresponds to a probability assignment of a possible value of a node given one combination of the states of its parents. Each individual of class CondRelationship represents one parent/state pair, so a probability assigment is conditioned by a set of CondRelationship pairs (one for each parent node).</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom>
+          <owl:Class rdf:about="#Entity"/>
+        </owl:someValuesFrom>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#hasParentState"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="hasParentName"/>
+        </owl:onProperty>
+        <owl:someValuesFrom>
+          <owl:Class rdf:about="#Node"/>
+        </owl:someValuesFrom>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom>
+          <owl:Class rdf:ID="ProbAssign"/>
+        </owl:someValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="isConditionantOf"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#hasParentName"/>
+        </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#hasParentName"/>
+        </owl:onProperty>
+        <owl:allValuesFrom>
+          <owl:Class rdf:about="#Node"/>
+        </owl:allValuesFrom>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:ID="TemporalReference">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#EnvironmentDomain"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#Entity">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="hasType"/>
+        </owl:onProperty>
+        <owl:someValuesFrom>
+          <owl:Class rdf:about="#MetaEntity"/>
+        </owl:someValuesFrom>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class rdf:about="#MetaEntity"/>
+        </owl:allValuesFrom>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#hasType"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="hasUID"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#hasType"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class>
+            <owl:unionOf rdf:parseType="Collection">
+              <owl:Class rdf:about="#BuiltInRV"/>
+              <owl:Class rdf:about="#Node"/>
+            </owl:unionOf>
+          </owl:Class>
+        </owl:allValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="isPossibleValueOf"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isConditionantOf"/>
+        </owl:onProperty>
+        <owl:allValuesFrom>
+          <owl:Class rdf:about="#ProbAssign"/>
+        </owl:allValuesFrom>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >MEBN logic treats the world as being comprised of entities that have attributes and are related to other entities. The logic assumes uniqueness or each concept (i.e. unique name assumption), so each entity in a MEBN model has a unique identifier and no unique identifier can be assigned to more than one entity.
+PR-OWL follows MEBN syntax and semantics for defining entities so each member of the class Entity has a unique identifier assigned by the datatype property hasUID. OWL doesn't have the unique name assumption so the UID can be seen a tool for providing maximum compatibility with legacy OWL ontologies, since parsers may refer to it as a means to enforce uniqueness among declared entities.
+It is important to note that not all concepts in an ontology have a UID, but only those which will be considered as part of the probabilistic model that is implicit in any probabilistic ontology. This structure allows mixing legacy deterministic ontologies with probabilististic ones. That allows knowledge engineers to assign PR-OWL definitions only to the parts of the domain for which plausible reasoning is desired.</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:about="#ArgRelationship">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Each generic random variable can have many arguments. Arguments are usually restricted in their type and meaning via the context nodes of an MFrag. In order to model these complex N-ary relations, PR-OWL makes use of the ArgRelationship class, which is a reified relation that conveys the number and order of arguments that each RV expects, it's type (defined via a link to the OVariable class), and the link to the RV itself.
+MEBN logic has the concept of a simple and a composite random variable term. Simple RV terms accepts variables and constant symbols as arguments. Composite RV terms also accepts other RV terms as arguments. In PR-OWL, the class ArgRelashionship models composite RV terms, while its SimpleArgRelashionship subclass models simple RV terms.</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="hasArgNumber"/>
+        </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#isArgumentOf"/>
+        </owl:onProperty>
+        <owl:allValuesFrom>
+          <owl:Class rdf:about="#Node"/>
+        </owl:allValuesFrom>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class>
+            <owl:unionOf rdf:parseType="Collection">
+              <owl:Class rdf:about="#Entity"/>
+              <owl:Class rdf:about="#OVariable"/>
+              <owl:Class rdf:about="#Node"/>
+              <owl:Class rdf:ID="Exemplar"/>
+            </owl:unionOf>
+          </owl:Class>
+        </owl:allValuesFrom>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#hasArgTerm"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#Node">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Node"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="isInnerTermOf"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >A node is part of an MFrag and it can be a random variable that is defined within that MFrag (a resident node), a RV that input values to nodes within that MFrag (an input node), or a RV that expresses the context in which the probability distributions within that MFrag are valid (a context node).</rdfs:comment>
+    <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    ></owl:versionInfo>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Entity"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasPossibleValues"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasInnerTerm"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="#Node"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom rdf:resource="#Entity"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasPossibleValues"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class rdf:about="#MFrag"/>
+        </owl:allValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="isNodeFrom"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom>
+          <owl:Class rdf:about="#MFrag"/>
+        </owl:someValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isNodeFrom"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#ArgRelationship"/>
+        <owl:onProperty>
+          <owl:InverseFunctionalProperty rdf:ID="hasArgument"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#BooleanRVState">
+    <rdfs:subClassOf rdf:resource="#Entity"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:hasValue rdf:resource="#Boolean"/>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#hasType"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >The BooleanRVStates class is formed by the Boolean truth-value states and are applied to Boolean random variables.</rdfs:comment>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#CategoricalRVState"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#MetaEntity"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="#ObjectEntity"/>
+  </owl:Class>
+  <owl:Class rdf:ID="DeclarativeDist">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >A declarative distribution is a distribution that is conveyed via a xsd:string datatype, using a specific format defined in the hasDeclaration datatype property. In order to allow a MEBN algorithm to work, a parser should be able to retrieve the probability distribution information in the format it is stored and then pass that information to the MEBN algorithm in its own proprietaty format.
+Describing a probability distribution is a much more compact and flexible way of conveying it. However, it assumes that an OWL-P parser would understand the format in which the information is stored. PR-OWL tables, on the other hand, convey probability distributions in a more interoperable way, but are not flexible enough to represent complex distributions such as the cases in which a node has multiple possible parents.
+For added compatibility, one probability distribution can be stored in multiple formats (i.e. multiple DeclarativeDist individuals for the same RV).</rdfs:comment>
+    <owl:disjointWith>
+      <owl:Class rdf:ID="PR-OWLTable"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf rdf:resource="#ProbDist"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Resident">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:InverseFunctionalProperty rdf:about="#hasArgument"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="#SimpleArgRelationship"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasPossibleValues"/>
+        </owl:onProperty>
+        <owl:someValuesFrom rdf:resource="#Entity"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Resident nodes are the random variables that have their respective probability distribution defined in the MFrag.</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isResidentNodeIn"/>
+        </owl:onProperty>
+        <owl:someValuesFrom>
+          <owl:Class rdf:about="#MFrag"/>
+        </owl:someValuesFrom>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#ArgRelationship"/>
+        <owl:onProperty>
+          <owl:InverseFunctionalProperty rdf:ID="isArgTermIn"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="#Node"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Input"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Entity"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasPossibleValues"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class rdf:about="#MFrag"/>
+        </owl:allValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isResidentNodeIn"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class>
+            <owl:unionOf rdf:parseType="Collection">
+              <owl:Class rdf:about="#Input"/>
+              <owl:Class rdf:about="#Resident"/>
+            </owl:unionOf>
+          </owl:Class>
+        </owl:allValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasParent"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class rdf:about="#Resident"/>
+        </owl:allValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isParentOf"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <owl:disjointWith rdf:resource="#Context"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom rdf:resource="#ProbDist"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="hasProbDist"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:minCardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isResidentNodeIn"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#ProbDist"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasProbDist"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Resident"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasInnerTerm"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#Domain_Res">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This is the subclass of class Resident (node) that includes all domain-specific resident nodes. It is disjoint with classes Finding_res and BuiltInRV.</rdfs:comment>
+    <owl:disjointWith rdf:resource="#Finding_res"/>
+    <owl:disjointWith rdf:resource="#BuiltInRV"/>
+    <rdfs:subClassOf>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Domain_Res"/>
+          <owl:Restriction>
+            <owl:allValuesFrom>
+              <owl:Class rdf:ID="Generative_input"/>
+            </owl:allValuesFrom>
+            <owl:onProperty>
+              <owl:ObjectProperty rdf:about="#hasParent"/>
+            </owl:onProperty>
+          </owl:Restriction>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom>
+          <owl:Class rdf:about="#Domain_MFrag"/>
+        </owl:someValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isResidentNodeIn"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isParentOf"/>
+        </owl:onProperty>
+        <owl:allValuesFrom>
+          <owl:Class rdf:about="#Domain_Res"/>
+        </owl:allValuesFrom>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isResidentNodeIn"/>
+        </owl:onProperty>
+        <owl:allValuesFrom>
+          <owl:Class rdf:about="#Domain_MFrag"/>
+        </owl:allValuesFrom>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="#Resident"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Generative_input">
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Finding_input"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#Input"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom>
+          <owl:Class>
+            <owl:unionOf rdf:parseType="Collection">
+              <owl:Class rdf:about="#Domain_Res"/>
+              <owl:Class rdf:about="#BuiltInRV"/>
+            </owl:unionOf>
+          </owl:Class>
+        </owl:someValuesFrom>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="isInputInstanceOf"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#Input">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom>
+          <owl:Class rdf:about="#MFrag"/>
+        </owl:someValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="isInputNodeIn"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isParentOf"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="#Resident"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="#Node"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom rdf:resource="#Resident"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isParentOf"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#SimpleArgRelationship"/>
+        <owl:onProperty>
+          <owl:InverseFunctionalProperty rdf:about="#hasArgument"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom>
+          <owl:Class>
+            <owl:unionOf rdf:parseType="Collection">
+              <owl:Class rdf:about="#BuiltInRV"/>
+              <owl:Class rdf:about="#Resident"/>
+            </owl:unionOf>
+          </owl:Class>
+        </owl:someValuesFrom>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#isInputInstanceOf"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class rdf:about="#MFrag"/>
+        </owl:allValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isInputNodeIn"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#isInputInstanceOf"/>
+        </owl:onProperty>
+        <owl:allValuesFrom>
+          <owl:Class>
+            <owl:unionOf rdf:parseType="Collection">
+              <owl:Class rdf:about="#BuiltInRV"/>
+              <owl:Class rdf:about="#Resident"/>
+            </owl:unionOf>
+          </owl:Class>
+        </owl:allValuesFrom>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#isInputInstanceOf"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >In PR-OWL, an input node is basically a "copy" of a resident node that is used as an input in a given MFrag. Thus, each individual of class Input is linked with an individual of class Resident via the property isInputInstanceOf.</rdfs:comment>
+    <owl:disjointWith rdf:resource="#Context"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isParentOf"/>
+        </owl:onProperty>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:minCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasInnerTerm"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="#Input"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <owl:disjointWith rdf:resource="#Resident"/>
+  </owl:Class>
+  <owl:Class rdf:about="#MetaEntity">
+    <rdfs:subClassOf rdf:resource="#Entity"/>
+    <owl:disjointWith rdf:resource="#ObjectEntity"/>
+    <owl:disjointWith rdf:resource="#BooleanRVState"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#CategoricalRVState"/>
+    </owl:disjointWith>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >The MetaEntity class includes all the entities that convey specific definitions about entities (e.g. typelabels that name the possible types of entities).</rdfs:comment>
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <owl:Restriction>
+            <owl:someValuesFrom rdf:resource="#Entity"/>
+            <owl:onProperty>
+              <owl:InverseFunctionalProperty rdf:ID="isTypeOf"/>
+            </owl:onProperty>
+          </owl:Restriction>
+          <owl:Restriction>
+            <owl:allValuesFrom rdf:resource="#Entity"/>
+            <owl:onProperty>
+              <owl:InverseFunctionalProperty rdf:about="#isTypeOf"/>
+            </owl:onProperty>
+          </owl:Restriction>
+        </owl:intersectionOf>
+      </owl:Class>
+    </owl:equivalentClass>
+  </owl:Class>
+  <owl:Class rdf:about="#MFrag">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >MEBN Fragments (MFrags) are the basic structure of any MEBN logic model. MFrags represent influences among clusters of related RVs and can portray repeated patters using ordinary variables as placeholders in to which entity identifiers can be substituted. In PR-OWL, each individual the MFrag class represents a MEBN Fragment (MFrag).</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="hasNode"/>
+        </owl:onProperty>
+        <owl:someValuesFrom rdf:resource="#Node"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom rdf:resource="#Resident"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="hasResidentNode"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Input"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="hasInputNode"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Resident"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasResidentNode"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="hasExemplar"/>
+        </owl:onProperty>
+        <owl:allValuesFrom>
+          <owl:Class rdf:about="#Exemplar"/>
+        </owl:allValuesFrom>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class rdf:about="#OVariable"/>
+        </owl:allValuesFrom>
+        <owl:onProperty>
+          <owl:InverseFunctionalProperty rdf:ID="hasOVariable"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Node"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasNode"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasResidentNode"/>
+        </owl:onProperty>
+        <owl:minCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:minCardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#MTheory"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="isMFragOf"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#Exemplar">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#ArgRelationship"/>
+        <owl:onProperty>
+          <owl:InverseFunctionalProperty rdf:about="#isArgTermIn"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom rdf:resource="#MFrag"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="isExemplarIn"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom>
+          <owl:Class rdf:about="#OVariable"/>
+        </owl:allValuesFrom>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="representsOVar"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom rdf:resource="#ArgRelationship"/>
+        <owl:onProperty>
+          <owl:InverseFunctionalProperty rdf:about="#isArgTermIn"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#MFrag"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isExemplarIn"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom>
+          <owl:Class rdf:about="#OVariable"/>
+        </owl:someValuesFrom>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#representsOVar"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Each individual of class Skolem represents a Skolem constant in a MEBN quantifier random variable.  Each MEBN quantifier random variable corresponds to a first-order formula beginning with a universal or existential quantifier. The Skolem constant in the MEBN random variable represents a generic individual within the scope of the universal or existential quantifier of the corresponding first-order formula.  
+MEBN logic contains a set of built-in MFrags for quantifier random variables.  In PR-OWL modelers can use individuals of class Skolem to define distributions for Skolem constants used in quantifier random variables.</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:about="#ProbAssign">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom rdf:resource="#CondRelationship"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="hasConditionant"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#CondRelationship"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasConditionant"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="hasStateName"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:ID="hasStateProb"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#hasStateName"/>
+        </owl:onProperty>
+        <owl:someValuesFrom rdf:resource="#Entity"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Entity"/>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#hasStateName"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Each cell in an PR-OWL table has a probability assignment for the state of a RV given the states of its parent nodes. Thus, the resulting relationship is N-ary and we opted for representing it via a reified relation (ProbAssign) that includes the name of the state to which the probability is being assigned, the probability value itself, and the list of states of parent nodes (i.e. conditionants) that collectively define the context in which that probability assignment is valid. Also, individuals of the ProbAssign class have an object property that links them with its respective PR-OWL table.</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:ID="SensingData">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="#EnvironmentDomain"/>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#Position">
+    <rdfs:subClassOf rdf:resource="#SensingData"/>
+  </owl:Class>
+  <owl:Class rdf:about="#Finding_MFrag">
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasInputNode"/>
+        </owl:onProperty>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom>
+          <owl:Class rdf:about="#Finding_input"/>
+        </owl:someValuesFrom>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasInputNode"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasResidentNode"/>
+        </owl:onProperty>
+        <owl:someValuesFrom rdf:resource="#Finding_res"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Finding MFrags are used to convey information about findings, which is the default way of entering evidence in a MEBN MTheory so a probabilistic algorithm can be applied to perform inferences regarding the new evidence. They have no context nodes, only one input and one resident node.</rdfs:comment>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasResidentNode"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Finding_res"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasResidentNode"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <owl:disjointWith>
+      <owl:Class rdf:about="#Domain_MFrag"/>
+    </owl:disjointWith>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#hasInputNode"/>
+        </owl:onProperty>
+        <owl:allValuesFrom>
+          <owl:Class rdf:about="#Finding_input"/>
+        </owl:allValuesFrom>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="#MFrag"/>
+  </owl:Class>
+  <owl:Class rdf:about="#EnvironmentDomain">
+    <rdfs:subClassOf rdf:resource="#ObjectEntity"/>
+  </owl:Class>
+  <owl:Class rdf:about="#OVariable">
+    <owl:equivalentClass>
+      <owl:Class>
+        <owl:intersectionOf rdf:parseType="Collection">
+          <owl:Restriction>
+            <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+            >1</owl:cardinality>
+            <owl:onProperty>
+              <owl:FunctionalProperty rdf:ID="isOVariableIn"/>
+            </owl:onProperty>
+          </owl:Restriction>
+          <owl:Restriction>
+            <owl:allValuesFrom rdf:resource="#ArgRelationship"/>
+            <owl:onProperty>
+              <owl:InverseFunctionalProperty rdf:about="#isArgTermIn"/>
+            </owl:onProperty>
+          </owl:Restriction>
+          <owl:Restriction>
+            <owl:allValuesFrom rdf:resource="#MFrag"/>
+            <owl:onProperty>
+              <owl:FunctionalProperty rdf:about="#isOVariableIn"/>
+            </owl:onProperty>
+          </owl:Restriction>
+          <owl:Restriction>
+            <owl:someValuesFrom rdf:resource="#MetaEntity"/>
+            <owl:onProperty>
+              <owl:FunctionalProperty rdf:ID="isSubsBy"/>
+            </owl:onProperty>
+          </owl:Restriction>
+          <owl:Restriction>
+            <owl:someValuesFrom rdf:resource="#ArgRelationship"/>
+            <owl:onProperty>
+              <owl:InverseFunctionalProperty rdf:about="#isArgTermIn"/>
+            </owl:onProperty>
+          </owl:Restriction>
+          <owl:Restriction>
+            <owl:allValuesFrom rdf:resource="#Exemplar"/>
+            <owl:onProperty>
+              <owl:FunctionalProperty rdf:about="#representsOVar"/>
+            </owl:onProperty>
+          </owl:Restriction>
+          <owl:Restriction>
+            <owl:someValuesFrom rdf:resource="#MFrag"/>
+            <owl:onProperty>
+              <owl:FunctionalProperty rdf:about="#isOVariableIn"/>
+            </owl:onProperty>
+          </owl:Restriction>
+          <owl:Restriction>
+            <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+            >1</owl:cardinality>
+            <owl:onProperty>
+              <owl:FunctionalProperty rdf:about="#isSubsBy"/>
+            </owl:onProperty>
+          </owl:Restriction>
+          <owl:Restriction>
+            <owl:allValuesFrom rdf:resource="#MetaEntity"/>
+            <owl:onProperty>
+              <owl:FunctionalProperty rdf:about="#isSubsBy"/>
+            </owl:onProperty>
+          </owl:Restriction>
+        </owl:intersectionOf>
+      </owl:Class>
+    </owl:equivalentClass>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Ordinary variables are placeholders used in MFrags to refer to non-specific entities as arguments in a given MFrag's RVs.</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:about="#CategoricalRVState">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Nodes represent random variables, which by definition have a list of mutually exclusive, collectively exhaustive states. In PR-OWL, those states are represented by individuals from class Entity. Some random variables have a list of categorical values as its possible states, and these are represented by elements from subclass CategoricalRVStates.</rdfs:comment>
+    <owl:disjointWith rdf:resource="#ObjectEntity"/>
+    <owl:disjointWith rdf:resource="#BooleanRVState"/>
+    <owl:disjointWith rdf:resource="#MetaEntity"/>
+    <rdfs:subClassOf rdf:resource="#Entity"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#hasType"/>
+        </owl:onProperty>
+        <owl:hasValue rdf:resource="#CategoryLabel"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#Finding_input">
+    <rdfs:subClassOf rdf:resource="#Input"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#isInputInstanceOf"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom rdf:resource="#Finding_MFrag"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isInputNodeIn"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Finding_MFrag"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isInputNodeIn"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom rdf:resource="#Finding_res"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isParentOf"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <owl:disjointWith rdf:resource="#Generative_input"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Finding_res"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isParentOf"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#isInputInstanceOf"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="#Finding_res"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom rdf:resource="#Finding_res"/>
+        <owl:onProperty>
+          <owl:FunctionalProperty rdf:about="#isInputInstanceOf"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isParentOf"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+  </owl:Class>
+  <owl:Class rdf:about="#PR-OWLTable">
+    <owl:disjointWith rdf:resource="#DeclarativeDist"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:cardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+        >1</owl:cardinality>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isProbDistOf"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="#ProbDist"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:onProperty>
+          <owl:InverseFunctionalProperty rdf:ID="hasProbAssign"/>
+        </owl:onProperty>
+        <owl:allValuesFrom rdf:resource="#ProbAssign"/>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom rdf:resource="#Resident"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isProbDistOf"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Resident"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:about="#isProbDistOf"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:someValuesFrom rdf:resource="#ProbAssign"/>
+        <owl:onProperty>
+          <owl:InverseFunctionalProperty rdf:about="#hasProbAssign"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >An PR-OWL table has all the probability assignments for each state of a RV stored in a xsd:decimal format (future implementations might use the pr-owl:prob format, but currently that means incompatibilities with OWL, which has no support for PR-OWL custom datatypes). 
+This format for storing probability distributions cannot represent complex cases for which only formulas can represent a probability distribution (e.g. a node that have a variable number of parents) and usually incurs in huge ontologies, since each table can have many cells and each cell is an individual of the ProbAssign class. Therefore, PR-OWL tables are only recommended for the simplest models in which the maximum level of compatibility is desired.</rdfs:comment>
+  </owl:Class>
+  <owl:Class rdf:about="#Domain_MFrag">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Domain MFrags is the subclass of class MFrag that includes all the domain-specific MFrags. It is disjoint with class Finding_MFrag. All generative MFrags created by the ontology engineer (i.e. the domain expert) are members of this class.</rdfs:comment>
+    <owl:disjointWith rdf:resource="#Finding_MFrag"/>
+    <rdfs:subClassOf>
+      <owl:Restriction>
+        <owl:allValuesFrom rdf:resource="#Context"/>
+        <owl:onProperty>
+          <owl:ObjectProperty rdf:ID="hasContextNode"/>
+        </owl:onProperty>
+      </owl:Restriction>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="#MFrag"/>
+  </owl:Class>
+  <owl:ObjectProperty rdf:about="#isMFragOf">
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="#hasMFrag"/>
+    </owl:inverseOf>
+    <rdfs:range rdf:resource="#MTheory"/>
+    <rdfs:domain rdf:resource="#MFrag"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links one MFrag to one or more MTheories (i.e. individuals of class MTheory) that have that MFrag as its component.
+The inverse property is hasMFrag.</rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#isExemplarIn">
+    <rdfs:range rdf:resource="#MFrag"/>
+    <rdfs:domain rdf:resource="#Exemplar"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property relates one Skolem constant (i.e. an individual from class Skolem) to the MFrag in which it is defined.
+The inverse of this property is hasSkolem.</rdfs:comment>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="#hasExemplar"/>
+    </owl:inverseOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#isNodeFrom">
+    <rdfs:range rdf:resource="#MFrag"/>
+    <rdfs:domain rdf:resource="#Node"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This general object property links one node to the MFrag it belongs to.
+The inverse property is hasNode</rdfs:comment>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="#hasNode"/>
+    </owl:inverseOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasResidentNode">
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="#hasNode"/>
+    </rdfs:subPropertyOf>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="#isResidentNodeIn"/>
+    </owl:inverseOf>
+    <rdfs:range rdf:resource="#Resident"/>
+    <rdfs:domain rdf:resource="#MFrag"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links an MFrag with its respective resident node(s).
+The inverse property is isResidentNodeIn</rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#isConditionantOf">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links one possible state of a parent node to the configuration that is conditioning its children state's probability distribution.
+The inverse property is hasConditionant.</rdfs:comment>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="#hasConditionant"/>
+    </owl:inverseOf>
+    <rdfs:range rdf:resource="#ProbAssign"/>
+    <rdfs:domain rdf:resource="#CondRelationship"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasNode">
+    <owl:inverseOf rdf:resource="#isNodeFrom"/>
+    <rdfs:range rdf:resource="#Node"/>
+    <rdfs:domain rdf:resource="#MFrag"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links one MFrag with its nodes.
+The inverse property is isNodeFrom</rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#isResidentNodeIn">
+    <rdfs:subPropertyOf rdf:resource="#isNodeFrom"/>
+    <owl:inverseOf rdf:resource="#hasResidentNode"/>
+    <rdfs:range rdf:resource="#MFrag"/>
+    <rdfs:domain rdf:resource="#Resident"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links an individual of class Node to the MFrag(s) that have this node as a resident node.
+The inverse property is hasResidentNode</rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasParent">
+    <rdfs:range>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Input"/>
+          <owl:Class rdf:about="#Resident"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:range>
+    <rdfs:domain rdf:resource="#Resident"/>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="#isParentOf"/>
+    </owl:inverseOf>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links a resident node of an MFrag with its respective parent(s), which has(have) to be an individual of either the class Resident or the class Input.
+The inverse property is isParentOf.</rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#isParentOf">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links a resident or input node of an MFrag with its respective children, which are resident nodes in that same MFrag.
+The inverse property is hasParent.</rdfs:comment>
+    <owl:inverseOf rdf:resource="#hasParent"/>
+    <rdfs:range rdf:resource="#Resident"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Input"/>
+          <owl:Class rdf:about="#Resident"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasProbDist">
+    <rdfs:range rdf:resource="#ProbDist"/>
+    <rdfs:domain rdf:resource="#Resident"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links a RV to its respective probability distributions, as defined in that RV's home MFrags. Note that this property is not being defined as functional, implying a polymorphic version of MEBN (where each RV can have different distributions in different MFrags).
+The inverse of this property is isProbDistOf.</rdfs:comment>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="#isProbDistOf"/>
+    </owl:inverseOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#isContextNodeIn">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links one context node to the respective MFrag in which that context node applies.
+The inverse property is hasContext.</rdfs:comment>
+    <rdfs:subPropertyOf rdf:resource="#isNodeFrom"/>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="#hasContextNode"/>
+    </owl:inverseOf>
+    <rdfs:range rdf:resource="#Domain_MFrag"/>
+    <rdfs:domain rdf:resource="#Context"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#isInputNodeIn">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links a node to the MFrags that have it as an input.
+The inverse property is hasInputNode.</rdfs:comment>
+    <rdfs:range rdf:resource="#MFrag"/>
+    <rdfs:domain rdf:resource="#Input"/>
+    <rdfs:subPropertyOf rdf:resource="#isNodeFrom"/>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="#hasInputNode"/>
+    </owl:inverseOf>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#isProbDistOf">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links a probability distribution to its respective RV (resident node). Note that this property is functional, since each probability distribution in a MFrag defines a unique RV.
+The inverse of this property is hasProbDist.</rdfs:comment>
+    <owl:inverseOf rdf:resource="#hasProbDist"/>
+    <rdfs:range rdf:resource="#Resident"/>
+    <rdfs:domain rdf:resource="#ProbDist"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasExemplar">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property relates one MFrag with the Exemplar constants (i.e. an individual from class Exemplar) that are defined in that MFrag.
+The inverse of this property is isExemplarIn.</rdfs:comment>
+    <owl:inverseOf rdf:resource="#isExemplarIn"/>
+    <rdfs:range rdf:resource="#Exemplar"/>
+    <rdfs:domain rdf:resource="#MFrag"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:ID="isGloballyExclusive">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property is used to define a given state of a random variable as unique within an MTheory. That is, among all instances of RV (say) "A", only one will have state "x" as true. Thus, if one copy of RV "A" is known to be in state "x", then all other instances of "A" withing that MTheory will be in states other than "x". If "A" is binary, knowing that one instance of "A" is True and that True in "A" is a Globally Exclusive state, then we know that all other instances of "A" are False.</rdfs:comment>
+    <rdfs:range rdf:resource="#Resident"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#CategoricalRVState"/>
+          <owl:Class rdf:about="#BooleanRVState"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#isInnerTermOf">
+    <rdfs:range rdf:resource="#Node"/>
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="#hasInnerTerm"/>
+    </owl:inverseOf>
+    <rdfs:domain rdf:resource="#Node"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property is used to model expressions.
+The inverse property is hasInnerTerm</rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasInnerTerm">
+    <owl:inverseOf rdf:resource="#isInnerTermOf"/>
+    <rdfs:range rdf:resource="#Node"/>
+    <rdfs:domain rdf:resource="#Node"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property makes the connection between the many possible inner terms inside a MENB equation. It is used to decompose random variable terms usually employed in context and input nodes.
+The inverse property is isInnerTermOf.</rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#isPossibleValueOf">
+    <owl:inverseOf>
+      <owl:ObjectProperty rdf:about="#hasPossibleValues"/>
+    </owl:inverseOf>
+    <rdfs:range>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#BuiltInRV"/>
+          <owl:Class rdf:about="#Node"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:range>
+    <rdfs:domain rdf:resource="#Entity"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property correlates one CategoricalRVState or BooleanRVState with the node(s) of one or more MFrags that have such entity as a possible state.
+Note that the individuals listed as being possible values of a node must form a mutually exclusive, collectively exhaustive set. PR-OWL has the same tools for enforcing exclusiveness (i.e. MEBN entity unique name assumption and the existential and universal qualifiers acting together as a closure axiom), but the domain expert must ensure completeness.
+The inverse property is hasPossibleValues.</rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasContextNode">
+    <rdfs:range rdf:resource="#Context"/>
+    <rdfs:domain rdf:resource="#Domain_MFrag"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links an MFrag to the context nodes being applied to it.
+The inverse property is isContextIn</rdfs:comment>
+    <owl:inverseOf rdf:resource="#isContextNodeIn"/>
+    <rdfs:subPropertyOf rdf:resource="#hasNode"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasConditionant">
+    <rdfs:domain rdf:resource="#ProbAssign"/>
+    <rdfs:range rdf:resource="#CondRelationship"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >Each instance of the class ProbAssign corresponds to the probability assigment for a given state of a RV. This probability assignment is conditioned by the parent RVs of that RV. This object property conveys the list of the states of the parent RV which have influenced that specific probability assignment. Since any MEBN entity can be a state in a RV, this property has MEBNEntity class as its range.
+The inverse property is isConditionantOf</rdfs:comment>
+    <owl:inverseOf rdf:resource="#isConditionantOf"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasMFrag">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links one MTheory with its respective MFrags. Usually, a probabilistic ontology will have only one MTheory as a means to convey the global joint probability distribution of its random variables. However, MEBN logic allows many possible MTheories to represent a given domain, so it is reasonable to infer that in some circunstances it might be preferable to have one probability ontology being represented by more than one MTheory.
+The inverse property is isMFragOf</rdfs:comment>
+    <rdfs:range rdf:resource="#MFrag"/>
+    <owl:inverseOf rdf:resource="#isMFragOf"/>
+    <rdfs:domain rdf:resource="#MTheory"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasInputNode">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links each MFrag with its respective input nodes.
+The inverse property is isInputNodeIn</rdfs:comment>
+    <owl:inverseOf rdf:resource="#isInputNodeIn"/>
+    <rdfs:subPropertyOf rdf:resource="#hasNode"/>
+    <rdfs:range rdf:resource="#Input"/>
+    <rdfs:domain rdf:resource="#MFrag"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="#hasPossibleValues">
+    <owl:inverseOf rdf:resource="#isPossibleValueOf"/>
+    <rdfs:range rdf:resource="#Entity"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#BuiltInRV"/>
+          <owl:Class rdf:about="#Node"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property defines what are the possible values of a node in an MFrag (which is by definition a random variable). Possible states include all kinds of entities.
+The inverse property is isPossibleValueOf</rdfs:comment>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:about="http://www.w3.org/2000/01/rdf-schema#range"/>
+  <owl:FunctionalProperty rdf:about="#isContextInstanceOf">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <owl:inverseOf>
+      <owl:InverseFunctionalProperty rdf:ID="hasContextInstance"/>
+    </owl:inverseOf>
+    <rdfs:range>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Domain_Res"/>
+          <owl:Class rdf:about="#BuiltInRV"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:range>
+    <rdfs:domain rdf:resource="#Context"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links context node to its "generative resident node" or built-in RV (i.e. the resident node or built-in RV from which the context node is a pointer).
+The inverse property is hasContextInstance</rdfs:comment>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#hasUID">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#Entity"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >MEBN logic has the unique naming assumption, which is not assumed in OWL (even though tools such as Protege make that assumption for improved reasoning purposes). In order to make sure that a tool that does not assume unique identifies would not prevent MEBN reasoners to work, each MEBN entity has a unique identifier assigned by this datatype property.
+The UID itself is conveyed as a xsd:string, and the hasUID datatype property is declared as functional in order to enforce uniqueness.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#isArgumentOf">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links an Argument Relationship to its respective Node (i.e. to the individual of class Node that has this ArgRelationship into its argument list).
+The inverse of this property is hasArgument.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <owl:inverseOf>
+      <owl:InverseFunctionalProperty rdf:about="#hasArgument"/>
+    </owl:inverseOf>
+    <rdfs:range rdf:resource="#Node"/>
+    <rdfs:domain rdf:resource="#ArgRelationship"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#hasStateProb">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:domain rdf:resource="#ProbAssign"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This datatype property is used to store the actual probability of an individual ProbAssign. Currently, OWL has no support for user defined datatypes, so instead of using owl-p:prob datatype (which includes all decimals between 0 and 1 inclusive) we are using xsd:decimal for compatibility purposes.</rdfs:comment>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#hasParentState">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:domain rdf:resource="#CondRelationship"/>
+    <rdfs:range rdf:resource="#Entity"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links a CondRelationship to an Entity. The reified conditional relationship is used to build PR-OWL Tables. One table usually has many probability assignments (which correspond to cells in a table), and each probability assignment has a set of conditionants. Conditionants are the states of the parents of a node that form a combination where a given probability assignment holds. Each CondRelationship defines a pair parent/state-of-parent, and the hasParentState property defines the parent state of that pair.</rdfs:comment>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#hasArgNumber">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"/>
+    <rdfs:domain rdf:resource="#ArgRelationship"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This datatype property assigns the argument number of an argument relationship. As an example, if we have a random variable with 3 arguments, it will have three ArgRelatioship reified relations. The first argument of the RV will have the number 1 assigned to its respective hasArgNumber property, the second will have the number 2 assigned and the third will have the number 3 assigned. In short this property keeps track of the ordering between the arguments of an RV.
+The datatype itself is a nonNegativeInteger. We used this instead of a positiveInteger because we wanted zero as a possible value, since we assume that a RV with no arguments means a global RV.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#hasParentName">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links a CondRelationship to a Node. The reified conditional relationship is used to build PR-OWL Tables. One table usually has many probability assignments (which correspond to cells in a table), and each probability assignment has a set of conditionants. Conditionants are the states of the parents of a node that form a combination where a given probability assignment holds. Each CondRelationship defines a pair parent/state-of-parent, and the hasParentName property defines the parent name of that pair.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:range rdf:resource="#Node"/>
+    <rdfs:domain rdf:resource="#CondRelationship"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="isProbAssignIn">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:range rdf:resource="#PR-OWLTable"/>
+    <rdfs:domain rdf:resource="#ProbAssign"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This is the inverse of the hasProbAssign object property and links one individual probability assignment to its respective probability distribution table.</rdfs:comment>
+    <owl:inverseOf>
+      <owl:InverseFunctionalProperty rdf:about="#hasProbAssign"/>
+    </owl:inverseOf>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#hasType">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <owl:inverseOf>
+      <owl:InverseFunctionalProperty rdf:about="#isTypeOf"/>
+    </owl:inverseOf>
+    <rdfs:range rdf:resource="#MetaEntity"/>
+    <rdfs:domain rdf:resource="#Entity"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >In the extended MEBN logic that is the backbone of PR-OWL, each and every entity has a type. The list of types consists of the individuals from class MetaEntity.
+This functional object property defines the type of each entity by linking it to an individual of the MetaEntity class. 
+Every entity has a MetaEntity (TypeLabel, CategoryLabel, Boolean, or a domain-specific label) as a Type. As an example, an hypothetical indivudual of an ObjectEntity class named Starship would have type Starship, which is a domain-specific label for an ObjectEntity individual that happens to be a starship. That domain-specific label is itself an individual of the MetaEntity class.
+The inverse property is isTypeOf.</rdfs:comment>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#isSubsBy">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links one instance of class OVariable to type of the entity that can substitute it. Each argument of a RV has its expected type defined within the home MFrag of that RV. In PR-OWL, the type restrictions are defined directly through the OVariable using the isSubsBy property. One MFrag can have many OVariables (which can be themselves linked to many SimpleArgRelationships) but each OVariable has a unique type, which is explicitly defined by the type of the entity that can substibute that OVariable.
+This object property is the inverse of subsOVar.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:range rdf:resource="#MetaEntity"/>
+    <owl:inverseOf>
+      <owl:InverseFunctionalProperty rdf:about="#subsOVar"/>
+    </owl:inverseOf>
+    <rdfs:domain rdf:resource="#OVariable"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#hasStateName">
+    <rdfs:range rdf:resource="#Entity"/>
+    <rdfs:domain rdf:resource="#ProbAssign"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >When a probability distribution is conveyed as an PR-OWL table, each individual cell is represented as an individual of the ProbAssign class. This object property refers to which state of a random variable (i.e. MFrag node) a given probability assignment refers to.
+The property itself is functional, since one state can have only one probability assignment for the configuration listed in each individual of the ProbAssign class.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="hasDeclaration">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    <rdfs:domain rdf:resource="#DeclarativeDist"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This datatype property conveys the declarative probability distributions. Each probability distribution can be expressed in different formats and each format is defined by the datatype property isRepresentedAs. Possible formats include Netica tables, Netica equations, Quiddity formulas, MEBN syntax, and others. However, the declaration itself is stored as a string so parsers are expected to understand how to deal with the specific text format of each declaration.</rdfs:comment>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="isDefault">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This datatype property indicates whether a probability distribution is the default probability distribution of a node or not. Default probability distributions for nodes are used when the context nodes of the MFrag containing those nodes are not met.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+    <rdfs:domain rdf:resource="#ProbDist"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:ID="hasVerticalPosition">
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+    <rdfs:domain rdf:resource="#Node"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This property refers to an optional attribute of a node related with its respective graphical representation. It conveys the absolute vertical position of a node, measured in pixels, within a grid. MEBN includes the graphical representation in its formal definition, thus this property is applicable to all implementations of MEBN logic, including PR-OWL.</rdfs:comment>
+    <owl:versionInfo rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This property was introduced in version 1.02</owl:versionInfo>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#DatatypeProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#hasArgTerm">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:range>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Entity"/>
+          <owl:Class rdf:about="#OVariable"/>
+          <owl:Class rdf:about="#Exemplar"/>
+          <owl:Class rdf:about="#Resident"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:range>
+    <rdfs:domain rdf:resource="#ArgRelationship"/>
+    <owl:inverseOf>
+      <owl:InverseFunctionalProperty rdf:about="#isArgTermIn"/>
+    </owl:inverseOf>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links one instance of class ArgRelationship (which is linked to a RV) to an internal variable within the home MFrag where its RV is resident, to a node that is being used as argument in that RV, or to a MEBN entity. 
+This object property is the inverse of isArgTermIn.
+One individual of the class ArgRelationship can have only one RV (since it refers to a specific argument of an RV), and thus can be related to only one OVariable (Simple RV Terms) or one Node (Composite RV Terms), which makes that property a functional one.
+The inverse property is isArgTermIn.</rdfs:comment>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#isOVariableIn">
+    <owl:inverseOf>
+      <owl:InverseFunctionalProperty rdf:about="#hasOVariable"/>
+    </owl:inverseOf>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This functional object property relates one ordinary variable (i.e. an individual from class OVariable) to its respective MFrag.
+The inverse of this property is hasOVariable.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:range rdf:resource="#MFrag"/>
+    <rdfs:domain rdf:resource="#OVariable"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#representsOVar">
+    <rdfs:range rdf:resource="#OVariable"/>
+    <rdfs:domain rdf:resource="#Exemplar"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links a Skolem constant (i.e. an individual of class Skolem) to the ordinary variable it represents in a quantifier expression. The property is functional since each Skolem constant represents only one ordinary variable in the model.
+The inverse property is isRepBySkolem.</rdfs:comment>
+    <owl:inverseOf>
+      <owl:InverseFunctionalProperty rdf:ID="isRepBySkolem"/>
+    </owl:inverseOf>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </owl:FunctionalProperty>
+  <owl:FunctionalProperty rdf:about="#isInputInstanceOf">
+    <owl:inverseOf>
+      <owl:InverseFunctionalProperty rdf:about="#hasInputInstance"/>
+    </owl:inverseOf>
+    <rdfs:range>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#BuiltInRV"/>
+          <owl:Class rdf:about="#Resident"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:range>
+    <rdfs:domain rdf:resource="#Input"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links an input node to its "generative resident node", or the resident node to which that input node is a copy.
+The inverse property is hasInputInstance.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </owl:FunctionalProperty>
+  <owl:InverseFunctionalProperty rdf:about="#hasInputInstance">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:range rdf:resource="#Input"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#BuiltInRV"/>
+          <owl:Class rdf:about="#Resident"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links a resident node or a built-in RV to its many possible "input node instances", or the instances of input nodes that take their values from that resident node or built-in RV.
+The inverse property is isInputInstanceOf.</rdfs:comment>
+    <owl:inverseOf rdf:resource="#isInputInstanceOf"/>
+  </owl:InverseFunctionalProperty>
+  <owl:InverseFunctionalProperty rdf:about="#isTypeOf">
+    <owl:inverseOf rdf:resource="#hasType"/>
+    <rdfs:range rdf:resource="#Entity"/>
+    <rdfs:domain rdf:resource="#MetaEntity"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This is the inverse of hasType object property, and basically lists all the MEBN entities that have its respective type defined by that specific individual of either the MetaEntity class or the ObjectEntity class.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+  </owl:InverseFunctionalProperty>
+  <owl:InverseFunctionalProperty rdf:about="#subsOVar">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:range rdf:resource="#OVariable"/>
+    <rdfs:domain rdf:resource="#MetaEntity"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property assigns MetaEntity individuals in order to define the type of the substituters for each MFrag ordinary variable.
+Its inverse property is the functional isSubsBy.</rdfs:comment>
+    <owl:inverseOf rdf:resource="#isSubsBy"/>
+  </owl:InverseFunctionalProperty>
+  <owl:InverseFunctionalProperty rdf:about="#hasContextInstance">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <owl:inverseOf rdf:resource="#isContextInstanceOf"/>
+    <rdfs:range rdf:resource="#Context"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Domain_Res"/>
+          <owl:Class rdf:about="#BuiltInRV"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links a resident node or a built-in RV to its many possible "context node instances", or the instances of context nodes that take their values from that resident node or built-in RV.
+The inverse property is isContextInstanceOf.</rdfs:comment>
+  </owl:InverseFunctionalProperty>
+  <owl:InverseFunctionalProperty rdf:about="#hasProbAssign">
+    <owl:inverseOf rdf:resource="#isProbAssignIn"/>
+    <rdfs:domain rdf:resource="#PR-OWLTable"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >An PR-OWL table is formed by many individual members of the class ProbAssign, which are cells in that table. This object property relates one PR-OWL table to its respective cells (ProbAssign elements).
+The inverse property is isProbAssignIn.</rdfs:comment>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:range rdf:resource="#ProbAssign"/>
+  </owl:InverseFunctionalProperty>
+  <owl:InverseFunctionalProperty rdf:about="#hasOVariable">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <owl:inverseOf rdf:resource="#isOVariableIn"/>
+    <rdfs:range rdf:resource="#OVariable"/>
+    <rdfs:domain rdf:resource="#MFrag"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This inverse functional object property relates one MFrag to its ordinary variables (i.e. individuals from class OVariable hat are related to this MFrag).
+The inverse of this property is isOVariableIn.</rdfs:comment>
+  </owl:InverseFunctionalProperty>
+  <owl:InverseFunctionalProperty rdf:about="#isRepBySkolem">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:range rdf:resource="#Exemplar"/>
+    <owl:inverseOf rdf:resource="#representsOVar"/>
+    <rdfs:domain rdf:resource="#OVariable"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links one ordinary variable to the Skolem constant that represents that ordinary variable in quantified expressions. The property is inverse functional, since one Skolem constant can represent only the group of entities that can be substituted by that ordinary variable in the model.
+The inverse property is representsOVar.</rdfs:comment>
+  </owl:InverseFunctionalProperty>
+  <owl:InverseFunctionalProperty rdf:about="#hasArgument">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <owl:inverseOf rdf:resource="#isArgumentOf"/>
+    <rdfs:range rdf:resource="#ArgRelationship"/>
+    <rdfs:domain rdf:resource="#Node"/>
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property is the link between a node in an MFrag and the reified relation that conveys its respective arguments. Note that each instance of a node will have only one argument relashionship, which is defined within that node's MFrag.
+The inverse of this property is isArgumentOf</rdfs:comment>
+  </owl:InverseFunctionalProperty>
+  <owl:InverseFunctionalProperty rdf:about="#isArgTermIn">
+    <rdfs:comment rdf:datatype="http://www.w3.org/2001/XMLSchema#string"
+    >This object property links an individual of class OVariable, Resident, Entity, or Skolem to one ArgRelationship(s) that has individual as its argument. Each ArgRelationship can have only one argument, but each individual of those classes can refer to many ArgRelationships.
+The inverse of this property is hasArgTerm.</rdfs:comment>
+    <owl:inverseOf rdf:resource="#hasArgTerm"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ObjectProperty"/>
+    <rdfs:range rdf:resource="#ArgRelationship"/>
+    <rdfs:domain>
+      <owl:Class>
+        <owl:unionOf rdf:parseType="Collection">
+          <owl:Class rdf:about="#Entity"/>
+          <owl:Class rdf:about="#OVariable"/>
+          <owl:Class rdf:about="#Exemplar"/>
+          <owl:Class rdf:about="#Resident"/>
+        </owl:unionOf>
+      </owl:Class>
+    </rdfs:domain>
+  </owl:InverseFunctionalProperty>
+  <DeclarativeDist rdf:ID="isInPath_Table"/>
+  <DeclarativeDist rdf:ID="CA_waterCurrentVelocity_Table"/>
+  <DeclarativeDist rdf:ID="CA_waterCurrentDirection_Table"/>
+  <DeclarativeDist rdf:ID="hasGPSPosition_Table"/>
+  <DeclarativeDist rdf:ID="waybackPath_Table"/>
+  <DeclarativeDist rdf:ID="CA_vehicleBatteryLevel_Table"/>
+  <DeclarativeDist rdf:ID="gpsPositionWaterCol_Table"/>
+  <DeclarativeDist rdf:ID="CA_direction_Table"/>
+  <DeclarativeDist rdf:ID="hasWaterCurrent_Table"/>
+</rdf:RDF>
+
+<!-- Created with Protege (with OWL Plugin 2.2, Build 341)  http://protege.stanford.edu -->

@@ -1,0 +1,6 @@
+(ASSERT (GPSPosition_LABEL gpsPos1))
+(ASSERT (WaterColumn_LABEL waterCol1))
+(ASSERT (= (gpsPositionWaterCol gpsPos1) waterCol1))
+(ASSERT (= (CA_waterSalinity waterCol1) High))
+(ASSERT (= (CA_depth gpsPos1) Surface))
+(ASSERT (= (CA_waterTemperature waterCol1) Medium))

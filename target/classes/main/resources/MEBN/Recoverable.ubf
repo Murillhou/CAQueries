@@ -1,0 +1,405 @@
+% UBF file header
+Version=0.04
+PrOwl="Recoverable.owl"
+
+% UBF MTheory declaration
+MTheory=MEBN
+NextMFrag=19
+NextResident=22
+NextInput=16
+NextContext=18
+NextEntity=1
+
+% UBF MFrags and Nodes declaration
+
+% MFrag
+MFrag=Ref_WaterColumn_hasWaterCurrent_WaterCurrent_MFrag
+NextOrdinaryVar=2
+
+% Resident nodes
+
+
+Node=hasWaterCurrent
+Type=DomainResidentNode
+Position=154.0,249.0
+Size=201,60
+Color=-66914
+PossibleValuesOrder=WaterCurrent
+
+% Ordinary Variables
+
+
+Node=waterCol
+Type=OrdinalVar
+Position=147.0,33.0
+Size=203,60
+Color=-5178237
+
+% MFrag
+MFrag=CA_waterCurrentVelocity_MFrag
+NextOrdinaryVar=2
+
+% Resident nodes
+
+
+Node=CA_waterCurrentVelocity
+Type=DomainResidentNode
+Position=323.0,278.0
+Size=247,60
+Color=-66914
+PossibleValuesOrder=High,Medium,Low
+
+% Ordinary Variables
+
+
+Node=waterCurr
+Type=OrdinalVar
+Position=320.0,29.0
+Size=205,60
+Color=-5178237
+
+% MFrag
+MFrag=Ref_GPSPosition_gpsPositionWaterCol_WaterColumn_MFrag
+NextOrdinaryVar=2
+
+% Resident nodes
+
+
+Node=gpsPositionWaterCol
+Type=DomainResidentNode
+Position=124.0,199.0
+Size=218,60
+Color=-66914
+PossibleValuesOrder=WaterColumn
+
+% Ordinary Variables
+
+
+Node=gpsPos
+Type=OrdinalVar
+Position=136.0,9.0
+Size=191,60
+Color=-5178237
+
+% MFrag
+MFrag=CA_waterCurrentDirection_MFrag
+NextOrdinaryVar=2
+
+% Resident nodes
+
+
+Node=CA_waterCurrentDirection
+Type=DomainResidentNode
+Position=334.0,223.0
+Size=255,60
+Color=-66914
+PossibleValuesOrder=NORTH,EAST,SOUTH,WEST
+
+% Ordinary Variables
+
+
+Node=waterCurr
+Type=OrdinalVar
+Position=343.0,28.0
+Size=205,60
+Color=-5178237
+
+% MFrag
+MFrag=WaterCurrent_MFrag
+NextOrdinaryVar=4
+
+% Resident nodes
+
+
+Node=WaterCurrent
+Type=DomainResidentNode
+Position=279.0,344.0
+Size=174,60
+Color=-66914
+PossibleValuesOrder=High_NORTH,Medium_NORTH,Low_NORTH,High_EAST,Medium_EAST,Low_EAST,High_SOUTH,Medium_SOUTH,Low_SOUTH,High_WEST,Medium_WEST,Low_WEST
+
+% Input nodes
+
+
+Node=IX5
+Type=GenerativeInputNode
+Position=409.0,231.0
+Size=255,60
+Color=-2302756
+
+Node=IX6
+Type=GenerativeInputNode
+Position=101.0,230.0
+Size=247,60
+Color=-2302756
+
+% Context nodes
+
+
+Node=CX4
+Type=ContextNode
+Position=62.0,109.0
+Size=294,60
+Color=-5178237
+
+Node=CX5
+Type=ContextNode
+Position=354.0,108.0
+Size=282,60
+Color=-5178237
+
+% Ordinary Variables
+
+
+Node=gpsPos
+Type=OrdinalVar
+Position=34.0,38.0
+Size=191,60
+Color=-5178237
+
+Node=waterCol
+Type=OrdinalVar
+Position=223.0,37.0
+Size=203,60
+Color=-5178237
+
+Node=waterCurr
+Type=OrdinalVar
+Position=428.0,34.0
+Size=205,60
+Color=-5178237
+
+% MFrag
+MFrag=WaybackPosWatercurrentCost_MFrag
+NextOrdinaryVar=6
+
+% Resident nodes
+
+
+Node=WaybackPosWatercurrentCost
+Type=DomainResidentNode
+Position=222.0,326.0
+Size=345,60
+Color=-66914
+PossibleValuesOrder=High,Medium,Low
+
+% Input nodes
+
+
+Node=IX13
+Type=GenerativeInputNode
+Position=385.0,177.0
+Size=174,60
+Color=-2302756
+
+Node=IX15
+Type=GenerativeInputNode
+Position=152.0,179.0
+Size=199,60
+Color=-2302756
+
+% Context nodes
+
+
+Node=CX15
+Type=ContextNode
+Position=375.0,92.0
+Size=244,60
+Color=-5178237
+
+% Ordinary Variables
+
+
+Node=gpsPos
+Type=OrdinalVar
+Position=504.0,15.0
+Size=191,60
+Color=-5178237
+
+Node=waybackpath
+Type=OrdinalVar
+Position=242.0,17.0
+Size=247,60
+Color=-5178237
+
+% MFrag
+MFrag=Recoverable_MFrag
+NextOrdinaryVar=5
+
+% Resident nodes
+
+
+Node=Recoverable
+Type=DomainResidentNode
+Position=221.0,377.0
+Size=216,60
+Color=-66914
+PossibleValuesOrder=true,false,absurd
+
+% Input nodes
+
+
+Node=IX1
+Type=GenerativeInputNode
+Position=37.0,185.0
+Size=225,60
+Color=-2302756
+
+Node=IX2
+Type=GenerativeInputNode
+Position=331.0,184.0
+Size=342,60
+Color=-2302756
+
+% Context nodes
+
+
+Node=CX16
+Type=ContextNode
+Position=112.0,90.0
+Size=268,60
+Color=-5178237
+
+Node=CX17
+Type=ContextNode
+Position=407.0,88.0
+Size=244,60
+Color=-5178237
+
+% Ordinary Variables
+
+
+Node=autRob
+Type=OrdinalVar
+Position=13.0,23.0
+Size=221,60
+Color=-5178237
+
+Node=gpsPos
+Type=OrdinalVar
+Position=542.0,23.0
+Size=191,60
+Color=-5178237
+
+Node=waybackpath
+Type=OrdinalVar
+Position=256.0,23.0
+Size=247,60
+Color=-5178237
+
+% MFrag
+MFrag=Ref_AutonomousRobot_waybackPath_CA_WayBackPath_MFrag
+NextOrdinaryVar=2
+
+% Resident nodes
+
+
+Node=waybackPath
+Type=DomainResidentNode
+Position=210.0,279.0
+Size=194,60
+Color=-66914
+PossibleValuesOrder=CA_WayBackPath
+
+% Ordinary Variables
+
+
+Node=autRob
+Type=OrdinalVar
+Position=182.0,68.0
+Size=221,60
+Color=-5178237
+
+% MFrag
+MFrag=Ref_GPSPosition_isInPath_CA_WayBackPath_MFrag
+NextOrdinaryVar=2
+
+% Resident nodes
+
+
+Node=isInPath
+Type=DomainResidentNode
+Position=199.0,270.0
+Size=203,60
+Color=-66914
+PossibleValuesOrder=CA_WayBackPath
+
+% Ordinary Variables
+
+
+Node=gpsPos
+Type=OrdinalVar
+Position=170.0,67.0
+Size=247,60
+Color=-5178237
+
+% MFrag
+MFrag=CA_direction_MFrag
+NextOrdinaryVar=3
+
+% Resident nodes
+
+
+Node=CA_direction
+Type=DomainResidentNode
+Position=261.0,162.0
+Size=199,60
+Color=-66914
+PossibleValuesOrder=NORTH,EAST,SOUTH,WEST
+
+% Ordinary Variables
+
+
+Node=waybackpath
+Type=OrdinalVar
+Position=233.0,52.0
+Size=247,60
+Color=-5178237
+
+% MFrag
+MFrag=CA_vehicleBatteryLevel_MFrag
+NextOrdinaryVar=2
+
+% Resident nodes
+
+
+Node=CA_vehicleBatteryLevel
+Type=DomainResidentNode
+Position=107.0,233.0
+Size=225,60
+Color=-66914
+PossibleValuesOrder=Full,High,Medium,Low,Critical
+
+% Ordinary Variables
+
+
+Node=autRob
+Type=OrdinalVar
+Position=88.0,13.0
+Size=221,60
+Color=-5178237
+
+% MFrag
+MFrag=Ref_AutonomousRobot_hasGPSPosition_GPSPosition_MFrag
+NextOrdinaryVar=2
+
+% Resident nodes
+
+
+Node=hasGPSPosition
+Type=DomainResidentNode
+Position=213.0,345.0
+Size=189,60
+Color=-66914
+PossibleValuesOrder=GPSPosition
+
+% Ordinary Variables
+
+
+Node=autRob
+Type=OrdinalVar
+Position=191.0,72.0
+Size=221,60
+Color=-5178237
+
+% Object Entity Instances
