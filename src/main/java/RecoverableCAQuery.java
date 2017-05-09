@@ -49,6 +49,7 @@ public class RecoverableCAQuery {
 	// load ubf/owl
 		UbfIO ubf = UbfIO.getInstance();
 		MultiEntityBayesianNetwork mebn = null;
+		System.out.println("LOADING MEBN FILE: "+mebnFile+"\n");
 		try {
 			mebn = ubf.loadMebn(new File(mebnFile));
 		} catch (IOException e) {

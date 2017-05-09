@@ -251,16 +251,15 @@ public class CAQuery {
 						pw.println("(ASSERT (= ("+irnName+" "+arg+") "+res+"))");
 					}
 				}else{
-					so.println("*****FOUND AN EDGE NODE THAT DIDNT PRODUCE RESULT. MFRAG: "+mfrag+". RN: "+irnName);
+					so.println("***ERROR*** FOUND AN EDGE NODE THAT DIDNT PRODUCE ANY RESULT. MFRAG: "+mfrag+". RN: "+irnName);
 				}
 			}
 		}
 	}
 	
 	
-	
 	private static String stringValueIRItoLabel(String iri) {
-		return iri.substring(0,iri.indexOf("^^"));
+		return (iri.indexOf("^^") > 0)? iri.substring(0,iri.indexOf("^^")) : iriToName(iri);
 	}
 	// TODO ONLY SUPPORTS CONTEXT NODES WITH FORMULA "CN_NAME(CNARGOV0)=CNARGOV1"
 	private static String labelToName(String label) {
@@ -272,7 +271,7 @@ public class CAQuery {
 		return SPARQLQuery.ontNamespace+name;
 	}
 	public static String iriToName(String iri) {
-		return iri.substring(iri.lastIndexOf("/")+1);
+		return (iri.lastIndexOf("/") > 0)? iri.substring(iri.lastIndexOf("/")+1) : iri;
 	}
 	public static void printAll(List<ResidentNode> residentNodesList) {
 		List<OrdinaryVariable> ovList = new ArrayList<>();
