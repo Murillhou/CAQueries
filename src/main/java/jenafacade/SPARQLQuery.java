@@ -1,7 +1,7 @@
 /**
  * 
  */
-package main.java.jena;
+package main.java.jenafacade;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -25,21 +25,14 @@ import com.hp.hpl.jena.util.FileManager;
  */
 public class SPARQLQuery {
 
-	public static String ontNamespace = "http://www.semanticweb.org/SWARMs/ontology/";
-	public static String ontologyFile = "src/main/resources/Ontology/SWARMsontologyMerged_v1_rdf.owl";
-
+	private Model model;
 	/**
 	 * 
 	 */
-	public SPARQLQuery() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	public static List<QuerySolution> executeArgQuery(String querystring) {
-		InputStream is = null;
-		Model model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
+	public SPARQLQuery(String ontNamespace, String ontologyFile) {
+		model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
 		try{
-			is = FileManager.get().open(ontologyFile);
+			InputStream is = FileManager.get().open(ontologyFile);
 			if(is!=null){
 				model.read(is,ontNamespace);
 				is.close();
@@ -48,6 +41,10 @@ public class SPARQLQuery {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
+	}
+	
+	public List<QuerySolution> executeArgQuery(String querystring) {
+		
 		Query query = QueryFactory.create(querystring);
 		QueryExecution qexec = QueryExecutionFactory.create(query, model);
 		ResultSet results = null;
@@ -64,19 +61,7 @@ public class SPARQLQuery {
 		return rl;
 	}
 	
-	public static List<QuerySolution> getSpatialContext(String gpsPosLatitude, String gpsPosLongitude, String gpsPosAltitude, float radius) {
-		InputStream is = null;
-		Model model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
-		try{
-			is = FileManager.get().open(ontologyFile);
-			if(is!=null){
-				model.read(is,ontNamespace);
-				is.close();
-			}
-		}catch(Exception e){
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		}
+	public List<QuerySolution> getSpatialContext(String gpsPosLatitude, String gpsPosLongitude, String gpsPosAltitude, float radius) {
 		SPARQLQueryBuilder sqb = new SPARQLQueryBuilder();
 		sqb.addToSelect("?gpsPos");sqb.addToSelect("?lat");sqb.addToSelect("?lon");sqb.addToSelect("?alt");
 		sqb.addTripleToWhere("?gpsPos", "ns:gpsLatitude", "?lat");
