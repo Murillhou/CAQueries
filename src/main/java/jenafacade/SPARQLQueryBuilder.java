@@ -1,4 +1,4 @@
-package main.java.jena;
+package main.java.jenafacade;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -34,6 +34,7 @@ public class SPARQLQueryBuilder {
 		this.select.addAll(sqb.select);
 		this.where.addAll(sqb.where);
 	}
+	
 	public String getQuery() {
 		if(!select.isEmpty() && !where.isEmpty()){
 			StringBuffer sb = new StringBuffer();
