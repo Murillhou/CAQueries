@@ -5,9 +5,8 @@ import java.util.LinkedList;
 
 public class SPARQLQueryBuilder {
 
-	LinkedList<String> select;
-	LinkedList<String> where;
-	StringBuilder sparqlQueryWhere;
+	private LinkedList<String> select;
+	private LinkedList<String> where;
 	
 	public SPARQLQueryBuilder() {
 		select = new LinkedList<String>();

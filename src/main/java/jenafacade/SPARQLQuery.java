@@ -30,11 +30,11 @@ public class SPARQLQuery {
 	 * 
 	 */
 	public SPARQLQuery(String ontNamespace, String ontologyFile) {
-		model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
+		this.model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
 		try{
 			InputStream is = FileManager.get().open(ontologyFile);
 			if(is!=null){
-				model.read(is,ontNamespace);
+				this.model.read(is,ontNamespace);
 				is.close();
 			}
 		}catch(Exception e){
@@ -46,7 +46,7 @@ public class SPARQLQuery {
 	public List<QuerySolution> executeArgQuery(String querystring) {
 		
 		Query query = QueryFactory.create(querystring);
-		QueryExecution qexec = QueryExecutionFactory.create(query, model);
+		QueryExecution qexec = QueryExecutionFactory.create(query, this.model);
 		ResultSet results = null;
 		List<QuerySolution> rl = new ArrayList<QuerySolution>();
 		try {
@@ -75,7 +75,7 @@ public class SPARQLQuery {
 		sqb.addFilterToWhere("?lon", ">=", String.valueOf(Float.parseFloat(gpsPosLongitude)-radius), "float");
 		String querystring = sqb.getQuery();
 		Query query = QueryFactory.create(querystring);
-		QueryExecution qexec = QueryExecutionFactory.create(query, model);
+		QueryExecution qexec = QueryExecutionFactory.create(query, this.model);
 		ResultSet results = null;
 		List<QuerySolution> rl = new ArrayList<QuerySolution>();
 		try {
