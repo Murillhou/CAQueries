@@ -16,6 +16,7 @@ import com.hp.hpl.jena.query.QuerySolution;
 import main.java.jenafacade.SPARQLQuery;
 import main.java.jenafacade.SPARQLQueryBuilder;
 import main.java.unbbayesfacade.MEBNQuery;
+import unbbayes.io.exception.UBIOException;
 import unbbayes.prs.bn.ProbabilisticNode;
 import unbbayes.prs.mebn.Argument;
 import unbbayes.prs.mebn.ContextNode;
@@ -23,16 +24,10 @@ import unbbayes.prs.mebn.InputNode;
 import unbbayes.prs.mebn.MFrag;
 import unbbayes.prs.mebn.MultiEntityBayesianNetwork;
 import unbbayes.prs.mebn.OrdinaryVariable;
-import unbbayes.prs.mebn.RandomVariableFinding;
 import unbbayes.prs.mebn.ResidentNode;
-import unbbayes.prs.mebn.entity.CategoricalStateEntity;
-import unbbayes.prs.mebn.entity.Entity;
-import unbbayes.prs.mebn.entity.ObjectEntity;
-import unbbayes.prs.mebn.entity.ObjectEntityInstance;
 import unbbayes.prs.mebn.entity.StateLink;
 import unbbayes.prs.mebn.entity.exception.CategoricalStateDoesNotExistException;
 import unbbayes.prs.mebn.entity.exception.TypeException;
-import unbbayes.prs.mebn.kb.KnowledgeBase;
 
 public class CAQuery {
 	private final static PrintStream LOG = System.out;
@@ -50,11 +45,9 @@ public class CAQuery {
 	private MEBNQuery mebnQuery;
 	private SPARQLQuery sparqlQuery;
 	/**
-	 * UnBBayes objects representing the MEBN to load and the knowledge base
-	 * with the findings
+	 * UnBBayes objects representing the MEBN
 	 */
 	private MultiEntityBayesianNetwork mebn;
-	private KnowledgeBase kb;
 	/**
 	 * Field used to store the "resolved OVs" (those with some result individual
 	 * or value IRI mapped to it)
@@ -80,7 +73,6 @@ public class CAQuery {
 		this.mebnQuery = new MEBNQuery(mebnFile, findingsFile);
 		this.sparqlQuery = new SPARQLQuery(ontNamespace, ontologyFile);
 		this.mebn = mebnQuery.getMEBN();
-		this.kb = mebnQuery.getKB(mebn);
 	}
 
 	/**
@@ -95,10 +87,10 @@ public class CAQuery {
 	 * @throws Exception
 	 *             Laskey´s algorithm error
 	 */
-	public Map<String,Float> executeQuery(String node, String arg) throws Exception {
-		ProbabilisticNode pn = mebnQuery.executeMEBNQuery(this.kb, this.mebn, node, arg);
-		Map<String,Float> res = new HashMap<>();
-		for(int i = 0; i < pn.getStatesSize(); i++){
+	public Map<String, Float> executeQuery(String node, String arg) throws Exception {
+		ProbabilisticNode pn = mebnQuery.executeMEBNQuery(node, arg);
+		Map<String, Float> res = new HashMap<>();
+		for (int i = 0; i < pn.getStatesSize(); i++) {
 			res.put(pn.getStateAt(i), pn.getMarginalAt(i));
 		}
 		return res;
@@ -106,9 +98,10 @@ public class CAQuery {
 
 	/**
 	 * 
-	 * For the current instance, get the current existing findings from the OWL ontology, that would help to
-	 * run a MEBN query against the resident node of the a MFrag whose name is passed as
-	 * argument(mfragName), and with the arguments specified by args and argOVName.
+	 * For the current instance, get the current existing findings from the OWL
+	 * ontology, that would help to run a MEBN query against the resident node
+	 * of the a MFrag whose name is passed as argument(mfragName), and with the
+	 * arguments specified by args and argOVName.
 	 * 
 	 * @param type
 	 *            0 if it is an environmental CA query (GPS coordinates as
@@ -175,8 +168,8 @@ public class CAQuery {
 				this.globalResolvedOVs.put(mfrag.getOrdinaryVariableByName(argOVName), solutionIRI);
 				// ADD ENTITY INSTANCE TO THE KB:"(ASSERT
 				// (GPSPosition_LABEL gpsPos))"
-				this.kb.insertEntityInstance(
-						mebn.getObjectEntityContainer().getObjectEntityByName("GPSPosition").addInstance(sol));
+				mebnQuery.addEntityInstanceFinding("GPSPosition", sol);
+				// this.kb.insertEntityInstance(mebn.getObjectEntityContainer().getObjectEntityByName("GPSPosition").addInstance(sol));
 				// CALL RECURSIVE FUNCTION ON SOUNDVELOCITY_MFRAG
 				LOG.println("\nCAQUERY: **************************EXECUTING RECURSIVE FUNCTION ON MFRAG: " + mfrag);
 				this.recursiveFunction(mfrag, resolvedArgs);
@@ -201,9 +194,7 @@ public class CAQuery {
 				// ADD THE ENTITY INSTANCE AS A FINDING ON THE KB AS, FOR
 				// EXAMPLE:"(ASSERT
 				// (AUTONOMOUSROBOT_LABEL AUTROB1))"
-				ObjectEntity a = mebn.getObjectEntityContainer().getObjectEntityByName(args[1]);
-				ObjectEntityInstance b = a.addInstance(args[0].toUpperCase());
-				this.kb.insertEntityInstance(b);
+				mebnQuery.addEntityInstanceFinding(args[1], args[0]);
 				// CALL RECURSIVE FUNCTION ON THE DESIRED MFRAG
 				LOG.println("\nCAQUERY: **************************EXECUTING RECURSIVE FUNCTION ON MFRAG: :" + mfrag);
 				this.recursiveFunction(mfrag, resolvedArgs);
@@ -216,11 +207,18 @@ public class CAQuery {
 	}
 
 	/**
-	 * Save the current state of things on the knowledge base a s a file with a
-	 * set of findings.
+	 * Save the the knowledge base state of things on the findings file.
 	 */
 	public void saveFindings() {
-		this.mebnQuery.saveFindings(this.kb, this.mebn);
+		this.mebnQuery.saveFindings();
+	}
+
+	/**
+	 * Load previous findings or knowledge base states from the findings file.
+	 * 
+	 */
+	public void loadFindings() throws UBIOException {
+		this.mebnQuery.loadFindings();
 	}
 
 	/**
@@ -351,11 +349,7 @@ public class CAQuery {
 						// (AUTONOMOUSROBOT_LABEL AUTROB1))"
 						LOG.println("CAQUERY: ADDED TO KB: " + "ASSERT (" + ov.getValueType().toString() + LABEL + eName
 								+ ")");
-						ObjectEntityInstance oei = mebn.getObjectEntityContainer()
-								.getObjectEntityByName(ov.getValueType().toString()).addInstance(eName);
-						if (oei != null) {
-							this.kb.insertEntityInstance(oei);
-						}
+						mebnQuery.addEntityInstanceFinding(ov.getValueType().toString(), eName);
 					}
 					// PUT RESOLVED URIs ON LOCAL RESOLVED OVs MAP
 					if (ovList.contains(ov)) {
@@ -386,15 +380,9 @@ public class CAQuery {
 					// RESPECTIVELY)
 					String s0 = localResolvedOV.get(cnargOVList.get(0));
 					String s1 = localResolvedOV.get(cnargOVList.get(1));
-					ObjectEntityInstance[] aux = new ObjectEntityInstance[1];
-					aux[0] = mebn.getObjectEntityContainer().getEntityInstanceByName(iriToName(s0));
-					ResidentNode rn = mebn.getDomainResidentNode(cnName);
-					Entity e = mebn.getObjectEntityContainer().getEntityInstanceByName(iriToName(s1));
-					if (e != null && rn != null && aux[0] != null) {
-						this.kb.insertRandomVariableFinding(new RandomVariableFinding(rn, aux, e, mebn));
-						LOG.println("CAQUERY: STORED ON THE KB: " + "ASSERT (= (" + cnName + " " + iriToName(s0) + ") "
-								+ iriToName(s1) + ")");
-					}
+					mebnQuery.addRandomVariableFinding(cnName, iriToName(s0), iriToName(s1));
+					LOG.println("CAQUERY: STORED ON THE KB: " + "ASSERT (= (" + cnName + " " + iriToName(s0) + ") "
+							+ iriToName(s1) + ")");
 				}
 				// PROCESS INPUT NODES
 				LOG.println("CAQUERY: **********PROCESSING INPUT NODES FOR MFRAG " + mfrag);
@@ -546,16 +534,9 @@ public class CAQuery {
 						// AND
 						// ENTITY INSTANCES EXISTS ON THE MEBN AND THE KB
 						// RESPECTIVELY)
-						ObjectEntityInstance[] aux = new ObjectEntityInstance[1];
-						aux[0] = mebn.getObjectEntityContainer().getEntityInstanceByName(arg);
-						ResidentNode rn = mebn.getDomainResidentNode(irnName);
-						CategoricalStateEntity cse = null;
-						cse = mebn.getCategoricalStatesEntityContainer().getCategoricalState(res);
-						if (rn != null && aux != null && cse != null) {
-							this.kb.insertRandomVariableFinding(new RandomVariableFinding(rn, aux, cse, mebn));
-							LOG.println("CAQUERY: STORED ON THE KB: (ASSERT (= (" + irnName + " " + arg + ") " + res
-									+ "))");
-						}
+						mebnQuery.addRandomVariableFinding(irnName, arg, res);
+						LOG.println(
+								"CAQUERY: STORED ON THE KB: (ASSERT (= (" + irnName + " " + arg + ") " + res + "))");
 					}
 				} else {
 					LOG.println("CAQUERY: *****LEAF NODE " + irnName + " DIDNT PRODUCE ANY RESULT.");

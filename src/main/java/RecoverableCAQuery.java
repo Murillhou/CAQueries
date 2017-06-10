@@ -34,6 +34,11 @@ public class RecoverableCAQuery {
 		CAQuery caQuery = null;
 		try {
 			caQuery = new CAQuery(ontNamespace, ontologyFile, mebnFile, findingsFile);
+			// load previous findings or knowledge base states from the findings
+			// file (disabled due to temporal
+			// references absence)
+			// caQuery.loadFindings();
+
 			// fill findings file from OWL ontology
 			String[] aux = new String[2];
 			aux[0] = args[0];
